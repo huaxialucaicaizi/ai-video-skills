@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Content checks (frontmatter, triggers, fiction mark, banned words)
+        run: python3 scripts/ci_validate.py
+
+      - name: Check markdown links
+        uses: lycheeverse/lychee-action@v1
+        with:
+          args: >-
+            --verbose
+            --no-progress
+            --max-retries 3
+            --retry-wait-time 2
+            --timeout 10
+            --accept 200,204,206,429,403
+            --exclude-mail
+            --exclude 'https://github.com/huaxialucaicaizi/ai-video-skills/(issues|discussions|security)'
+            --exclude 'https://linux.do'
+            --exclude 'https://t.me/'
+            --exclude 'https://mp.weixin.qq.com'
+            '**/*.md'
+          fail: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  doctor-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Mac environment doctor script
+        run: |
+          chmod +x scripts/doctor.sh
+          # CI runner should have node; ffmpeg may or may not — script must not crash.
+          # If ffmpeg missing, doctor exits 1; install via brew for the check job.
+          brew list ffmpeg >/dev/null 2>&1 || brew install ffmpeg
+          ./scripts/doctor.sh

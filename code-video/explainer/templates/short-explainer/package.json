@@ -1,0 +1,18 @@
+{
+  "name": "short-explainer",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Short HyperFrames explainer template for ai-video-skills (fictional demo topic).",
+  "scripts": {
+    "render": "hyperframes render --output ../../../../tmp-render/short-explainer.mp4",
+    "preview": "hyperframes preview",
+    "doctor": "hyperframes doctor"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "gsap": "^3.14.2",
+    "hyperframes": "^0.9.65"
+  }
+}
