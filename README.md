@@ -157,7 +157,7 @@ Copy the whole `dist/<name>/` folder into your agent skills directory (do not pa
 
 | 包 / Package | 做什么 / Role | 依赖 / Needs |
 | --- | --- | --- |
-| `dist/video-router/` | 只把用户分到科普或口播；自己不渲染画面 |  alone 用不起来 / not useful alone |
+| `dist/video-router/` | 只把用户分到科普或口播；自己不渲染画面 | 单独用不起来 / not useful alone |
 | `dist/explainer/` | 知识科普 / 课件转视频（含 HyperFrames 模板与字体） | 可独立渲染 / can render alone |
 | `dist/talking-head/` | AI/科技口播粗剪流程（overlays 等；本版不带渲染字体） | 可独立跑流程文档 / workflow alone |
 
