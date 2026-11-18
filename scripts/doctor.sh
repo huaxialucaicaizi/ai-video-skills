@@ -25,6 +25,8 @@ note() { echo "WARN $1"; warn=$((warn + 1)); }
 if command -v node >/dev/null 2>&1; then
   NODE_VER="$(node -v | sed 's/^v//')"
   NODE_MAJOR="${NODE_VER%%.*}"
+  NODE_MINOR="$(printf '%s' "${NODE_VER}" | cut -d. -f2)"
+  NODE_MINOR="${NODE_MINOR:-0}"
   ok "Node.js ${NODE_VER} 已安装"
   if [[ "${NODE_MAJOR}" -ge 22 ]]; then
     ok "HyperFrames 要求 Node.js 22+：满足（当前 ${NODE_VER}）"
@@ -37,11 +39,11 @@ if command -v node >/dev/null 2>&1; then
   else
     note "Claude Code（npm 安装路径）常见要求 Node.js 22+：当前 ${NODE_VER}（以官方文档为准）"
   fi
-  # DeepSeek Harness 文档曾写 24.9+（待核实是否仍适用）
-  if [[ "${NODE_MAJOR}" -ge 24 ]]; then
-    ok "DeepSeek Harness 文档要求（曾写 24.9+）：当前主版本 ${NODE_MAJOR} 可能满足（待核实完整版本）"
+  # DeepSeek Harness: npm @deepseek-ai/dsh 0.2.2-rc.1 engines node >=24.9.0（2026-11-18 查询）
+  if [[ "${NODE_MAJOR}" -gt 24 ]] || { [[ "${NODE_MAJOR}" -eq 24 ]] && [[ "${NODE_MINOR}" -ge 9 ]]; }; then
+    ok "DeepSeek Harness（npm @deepseek-ai/dsh engines：node >=24.9.0）：满足（当前 ${NODE_VER}）"
   else
-    note "DeepSeek Harness 文档曾写 Node.js 24.9+：当前 ${NODE_VER}（待核实；仅在使用该工具时需要）"
+    note "DeepSeek Harness 要求 Node.js >=24.9.0（以 npm @deepseek-ai/dsh 的 engines 为准）：当前 ${NODE_VER}（仅在使用该工具时需要）"
   fi
 else
   bad "未找到 Node.js（HyperFrames / 渲染需要；Claude Code npm 路径也常需要）"

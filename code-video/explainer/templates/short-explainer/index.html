@@ -7,16 +7,17 @@
     <!-- GSAP: npm local file only — do not use jsDelivr / CDN -->
     <script src="./node_modules/gsap/dist/gsap.min.js"></script>
     <style>
+      /* Fonts from repo shared/fonts (OFL) — relative path, no CDN */
       @font-face {
         font-family: "Noto Sans SC";
-        src: url("./fonts/NotoSansSC-Regular.woff") format("woff");
+        src: url("../../../../shared/fonts/NotoSansSC-Regular.woff") format("woff");
         font-weight: 400;
         font-style: normal;
         font-display: block;
       }
       @font-face {
         font-family: "Noto Sans SC";
-        src: url("./fonts/NotoSansSC-Bold.woff") format("woff");
+        src: url("../../../../shared/fonts/NotoSansSC-Bold.woff") format("woff");
         font-weight: 700;
         font-style: normal;
         font-display: block;
@@ -51,37 +52,47 @@
         position: absolute;
         inset: 0;
       }
+      /* Center content vertically within the safe area (not top-quarter only) */
       .safe {
         position: absolute;
         left: var(--safe-x);
         right: var(--safe-x);
         top: var(--safe-y);
-        bottom: calc(var(--safe-y) + 140px);
+        bottom: calc(var(--safe-y) + 160px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 40px;
+      }
+      .safe > .stack {
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
       }
       .eyebrow {
         font-size: 32px;
         letter-spacing: 0.08em;
         color: var(--accent);
-        margin: 0 0 28px;
+        margin: 0;
         font-weight: 700;
       }
       h1 {
         font-size: 72px;
         line-height: 1.2;
-        margin: 0 0 28px;
+        margin: 0;
         font-weight: 700;
       }
       h2 {
         font-size: 56px;
         line-height: 1.25;
-        margin: 0 0 24px;
+        margin: 0;
         font-weight: 700;
       }
       .body {
         font-size: 36px;
         line-height: 1.45;
         margin: 0;
-        max-width: 860px;
+        max-width: 900px;
       }
       .subtitle {
         position: absolute;
@@ -98,13 +109,46 @@
         background: rgba(232, 238, 242, 0.08);
         border-left: 6px solid var(--accent);
         padding: 28px 32px;
-        margin-top: 36px;
         border-radius: 0;
       }
       .card p {
         font-size: 34px;
         margin: 0;
         line-height: 1.4;
+      }
+
+      /* Steps overlay (from shared/overlays/steps) — badge >= 32px */
+      .overlay-steps .steps {
+        list-style: none;
+        padding: 0;
+        margin: 12px 0 0;
+      }
+      .overlay-steps .steps li {
+        display: flex;
+        gap: 24px;
+        align-items: flex-start;
+        margin-bottom: 36px;
+      }
+      .overlay-steps .steps li:last-child {
+        margin-bottom: 0;
+      }
+      .overlay-steps .n {
+        display: inline-flex;
+        width: 56px;
+        height: 56px;
+        align-items: center;
+        justify-content: center;
+        background: var(--accent);
+        color: var(--text);
+        border-radius: 0;
+        font-size: 32px;
+        font-weight: 700;
+        flex: none;
+      }
+      .overlay-steps .t {
+        font-size: 34px;
+        line-height: 1.4;
+        padding-top: 8px;
       }
     </style>
   </head>
@@ -118,29 +162,50 @@
       data-height="1920"
       data-fps="30"
     >
-      <!-- Shot 1: 0–3s title -->
+      <!-- Shot 1: 0–3s title — vertically centered mid-frame -->
       <section class="clip" id="shot1" data-start="0" data-duration="3" data-track-index="1">
         <div class="safe">
-          <p class="eyebrow" id="s1-eye">VIBE 科普</p>
-          <h1 id="s1-title">什么是 token？</h1>
-          <p class="body" id="s1-body">用一分钟搞懂大模型计费里的「字数单位」。</p>
+          <div class="stack">
+            <p class="eyebrow" id="s1-eye">VIBE 科普</p>
+            <h1 id="s1-title">什么是 token？</h1>
+            <p class="body" id="s1-body">用一分钟搞懂大模型计费里的「字数单位」。</p>
+          </div>
+          <div class="card" id="s1-card">
+            <p>先建立直觉，再看计费与长度怎么估。</p>
+          </div>
         </div>
         <p class="subtitle" id="s1-sub">token：模型读写文本的基本单位</p>
       </section>
 
-      <!-- Shot 2: 3–6s definition -->
-      <section class="clip" id="shot2" data-start="3" data-duration="3" data-track-index="1">
+      <!-- Shot 2: 3–6s steps overlay card — vertically centered -->
+      <section
+        class="clip overlay-steps"
+        id="shot2"
+        data-start="3"
+        data-duration="3"
+        data-track-index="1"
+      >
         <div class="safe">
-          <h2 id="s2-title">它大概是什么？</h2>
-          <p class="body" id="s2-body">模型把文字切成小块来计算——费用和长度上限，往往按 token 计。</p>
-          <div class="card" id="s2-card">
-            <p>具体分词规则以各厂商文档为准（本片为虚构科普示例）。</p>
-          </div>
+          <h2 class="title" id="s2-title">三步理解它</h2>
+          <ol class="steps" id="s2-steps">
+            <li>
+              <span class="n">1</span>
+              <span class="t">把文字切成小块</span>
+            </li>
+            <li>
+              <span class="n">2</span>
+              <span class="t">费用和长度，往往按这些小块计</span>
+            </li>
+            <li>
+              <span class="n">3</span>
+              <span class="t">对比前先看当前模型的官方说明</span>
+            </li>
+          </ol>
         </div>
         <p class="subtitle" id="s2-sub">计费与长度，常按 token 估算</p>
       </section>
 
-      <!-- Shot 3: 6–9s caveat -->
+      <!-- Shot 3: 6–9s caveat — vertically centered -->
       <section class="clip" id="shot3" data-start="6" data-duration="3" data-track-index="1">
         <div class="safe">
           <h2 id="s3-title">注意一点</h2>
@@ -149,7 +214,7 @@
             <p>对比数字前，先查当前模型的官方说明。</p>
           </div>
         </div>
-        <p class="subtitle" id="s3-sub">分词因模型而异，数字待核实</p>
+        <p class="subtitle" id="s3-sub">分词因模型而异，以官方说明为准</p>
       </section>
     </div>
 
@@ -157,7 +222,6 @@
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
 
-      // Shot 1 enter (overshoot)
       tl.fromTo(
         "#s1-eye",
         { opacity: 0, y: 36 },
@@ -177,39 +241,37 @@
         0.45,
       );
       tl.fromTo(
-        "#s1-sub",
-        { opacity: 0, y: 20 },
+        "#s1-card",
+        { opacity: 0, y: 24 },
         { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" },
         0.55,
       );
+      tl.fromTo(
+        "#s1-sub",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" },
+        0.6,
+      );
 
-      // Shot 2
       tl.fromTo(
         "#s2-title",
-        { opacity: 0, y: 48 },
-        { opacity: 1, y: 0, duration: 0.55, ease: "back.out(1.4)" },
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "back.out(1.4)" },
         3.1,
       );
       tl.fromTo(
-        "#s2-body",
+        "#s2-steps li",
         { opacity: 0, y: 28 },
-        { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+        { opacity: 1, y: 0, duration: 0.45, stagger: 0.18, ease: "power3.out" },
         3.25,
-      );
-      tl.fromTo(
-        "#s2-card",
-        { opacity: 0, y: 24 },
-        { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" },
-        3.4,
       );
       tl.fromTo(
         "#s2-sub",
         { opacity: 0, y: 20 },
         { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" },
-        3.45,
+        3.5,
       );
 
-      // Shot 3
       tl.fromTo(
         "#s3-title",
         { opacity: 0, y: 48 },

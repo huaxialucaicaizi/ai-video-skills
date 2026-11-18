@@ -67,14 +67,15 @@
 
 .overlay-steps .n {
   display: inline-flex;
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   align-items: center;
   justify-content: center;
   background: var(--ov-accent);
   color: var(--ov-text);
   border-radius: var(--ov-radius);
-  font-size: 28px;
+  font-size: 32px; /* style-card floor: label/body >= 32px on 1080 portrait */
+  font-weight: 700;
   flex: none;
 }
 

@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "description": "Short HyperFrames explainer template for ai-video-skills (fictional demo topic).",
   "scripts": {
-    "render": "hyperframes render --output ../../../../tmp-render/short-explainer.mp4",
+    "render": "hyperframes render --output ./renders/short-explainer.mp4",
     "preview": "hyperframes preview",
     "doctor": "hyperframes doctor"
   },
