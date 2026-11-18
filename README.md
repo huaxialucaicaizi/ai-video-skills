@@ -46,6 +46,10 @@ Office-video skills for Chinese workflows: code-generated knowledge explainers a
 
 **目前仅支持 Mac。** 云端可用于开发自检；凡标注「待 Mac 实测」的条目，不以 Linux 结果冒充已验收。部分项已在 iMac 实测，见下方「Mac 实测状态」。
 
+![知识科普模板实际渲染截图（虚构示例内容）](assets/readme/explainer-frames.png)
+
+*知识科普模板实际渲染截图（虚构示例内容）*
+
 <a id="zh-path"></a>
 ### 学习路径
 
@@ -326,6 +330,10 @@ Apache License 2.0。见 `LICENSE` 与 `NOTICE`。
 Office-video skills: code-generated knowledge explainers and semi-automated talking-head edits. Default renderer: **HyperFrames** ([heygen-com/hyperframes](https://github.com/heygen-com/hyperframes); follow the [official docs](https://hyperframes.heygen.com/introduction)). License: **Apache-2.0**.
 
 **Mac only for v1.** Cloud Linux may be used for smoke tests; items marked "To be tested on Mac" are not claimed as accepted. Some items are already verified on an iMac — see [Mac verification status](#en-mac) below.
+
+![Actual frames rendered from the short-explainer template (fictional sample content)](assets/readme/explainer-frames.png)
+
+*Actual frames rendered from the short-explainer template (fictional sample content)*
 
 <a id="en-path"></a>
 ### Learning path
