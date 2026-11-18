@@ -5,14 +5,15 @@
 ## 要求
 
 - Node.js 22+
-- 系统已安装 ffmpeg（见仓库 `scripts/doctor.sh`）
-- 字体：直接引用仓库 `shared/fonts/`（OFL），见 `index.html` 的 `@font-face` 相对路径；渲染不访问外网字体 CDN
+- 系统已安装 ffmpeg（见本 skill 根目录 `./doctor.sh`；仓库内为 `scripts/doctor.sh`）
+- 字体：`./fonts/`（由 `scripts/build_dist.py` 从仓库 `shared/fonts/` 同步，含 OFL.txt）；`index.html` 只用包内相对路径，不访问外网 CDN、不使用父目录穿越
 - GSAP：本目录 `npm install` 本地依赖，不从 jsDelivr 加载
 
 ## 命令
 
+在本模板目录内：
+
 ```bash
-cd code-video/explainer/templates/short-explainer
 npm install
 npm run render
 # 输出：./renders/short-explainer.mp4（已 gitignore）

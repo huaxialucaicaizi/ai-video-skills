@@ -19,4 +19,4 @@
 
 ## 环境
 
-路由确定后跑 `scripts/doctor.sh`。**必须检查 ffmpeg 是否已装**（HyperFrames 本地渲染依赖）。
+路由确定后跑环境检查脚本（仓库：`../scripts/doctor.sh`；安装包：`./doctor.sh`）。**必须检查 ffmpeg 是否已装**（HyperFrames 本地渲染依赖）。

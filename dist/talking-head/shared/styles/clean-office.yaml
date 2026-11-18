@@ -1,0 +1,40 @@
+id: clean-office
+name: 清爽办公
+version: 1
+palette:
+  primary: "#1B3A4B"      # 约 60% 深青灰
+  secondary: "#E8EEF2"    # 约 30% 浅灰底块
+  accent: "#2F6FED"       # 约 10% 办公蓝高亮（非紫）
+  background: "#0F1C24"
+  text: "#F5F7FA"
+fonts:
+  display: Noto Sans SC
+  body: Noto Sans SC
+typography:
+  min_body_px: 32
+  min_label_px: 32
+  min_code_px: 32
+  min_subtitle_px: 48
+layout:
+  safe_margin_x_px: 80
+  safe_margin_y_px: 160
+  safe_margin_px: 64
+  grid: 12-col
+  radius_px: 0
+motion:
+  enter: fade-up
+  emphasis: punch-number
+  easing: power3.out
+  enter_overshoot: true
+  typewriter: optional
+  progress_follows_brief: true
+graphics:
+  language: 扁平色块 + 细线图标；左对齐信息层级清晰
+charts:
+  style: 简洁柱/折线，无 3D，无装饰阴影
+forbidden:
+  - 默认紫色渐变
+  - 满屏 emoji
+  - 每页三卡片套路
+  - 暖奶油底 + 陶土色点缀的默认 AI 海报味
+  - 大圆角卡片堆叠

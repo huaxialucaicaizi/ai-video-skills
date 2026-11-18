@@ -7,17 +7,17 @@
     <!-- GSAP: npm local file only — do not use jsDelivr / CDN -->
     <script src="./node_modules/gsap/dist/gsap.min.js"></script>
     <style>
-      /* Fonts from repo shared/fonts (OFL) — relative path, no CDN */
+      /* Fonts: ./fonts (synced from shared/fonts, OFL) — no CDN, no parent traversal */
       @font-face {
         font-family: "Noto Sans SC";
-        src: url("../../../../shared/fonts/NotoSansSC-Regular.woff") format("woff");
+        src: url("./fonts/NotoSansSC-Regular.woff") format("woff");
         font-weight: 400;
         font-style: normal;
         font-display: block;
       }
       @font-face {
         font-family: "Noto Sans SC";
-        src: url("../../../../shared/fonts/NotoSansSC-Bold.woff") format("woff");
+        src: url("./fonts/NotoSansSC-Bold.woff") format("woff");
         font-weight: 700;
         font-style: normal;
         font-display: block;

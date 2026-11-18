@@ -18,11 +18,33 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
       - name: Install dependencies
-        run: pip install pyyaml
+        run: |
+          pip install pyyaml
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
 
       - name: Content checks (frontmatter, triggers, fiction mark, banned words)
         run: python3 scripts/ci_validate.py
+
+      - name: Rebuild dist/ and fail if committed packages differ
+        run: python3 scripts/build_dist.py --check
+
+      - name: Path-check all dist packages (isolated copy)
+        run: |
+          python3 scripts/ci_package_check.py dist/video-router
+          python3 scripts/ci_package_check.py dist/talking-head
+          python3 scripts/ci_package_check.py dist/explainer
+
+      - name: dist/explainer lint(0 errors) then render smoke
+        run: |
+          chmod +x scripts/ci_dist_smoke.sh scripts/doctor.sh dist/*/doctor.sh || true
+          ./scripts/ci_dist_smoke.sh
 
       - name: Check markdown links
         uses: lycheeverse/lychee-action@v1
@@ -50,10 +72,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run Mac environment doctor script
+      - name: Install ffmpeg
+        run: brew list ffmpeg >/dev/null 2>&1 || brew install ffmpeg
+
+      - name: Run repo doctor.sh
         run: |
           chmod +x scripts/doctor.sh
-          # CI runner should have node; ffmpeg may or may not — script must not crash.
-          # If ffmpeg missing, doctor exits 1; install via brew for the check job.
-          brew list ffmpeg >/dev/null 2>&1 || brew install ffmpeg
           ./scripts/doctor.sh
+
+      - name: Path-check + doctor.sh inside each dist package (isolated)
+        run: |
+          chmod +x dist/*/doctor.sh scripts/ci_package_check.py
+          python3 scripts/ci_package_check.py dist/video-router --run-doctor
+          python3 scripts/ci_package_check.py dist/talking-head --run-doctor
+          python3 scripts/ci_package_check.py dist/explainer --run-doctor

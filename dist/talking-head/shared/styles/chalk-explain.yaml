@@ -1,0 +1,40 @@
+id: chalk-explain
+name: 黑板讲解
+version: 1
+palette:
+  primary: "#F2F0E9"      # 粉笔浅色字
+  secondary: "#2A4A3A"    # 黑板深绿块
+  accent: "#E6C35C"       # 粉笔黄高亮
+  background: "#1A2E24"
+  text: "#F2F0E9"
+fonts:
+  display: Noto Sans SC
+  body: Noto Sans SC
+typography:
+  min_body_px: 32
+  min_label_px: 32
+  min_code_px: 32
+  min_subtitle_px: 48
+layout:
+  safe_margin_x_px: 80
+  safe_margin_y_px: 160
+  safe_margin_px: 64
+  grid: 12-col
+  radius_px: 0
+motion:
+  enter: fade-up
+  emphasis: punch-number
+  easing: back.out(1.4)
+  enter_overshoot: true
+  typewriter: optional
+  progress_follows_brief: true
+graphics:
+  language: 黑板色块 + 粉笔线框图标；像课堂板书，不要贴纸风
+charts:
+  style: 白线示意柱/折线，无 3D
+forbidden:
+  - 默认紫色渐变
+  - 满屏 emoji
+  - 每页三卡片套路
+  - 霓虹发光描边
+  - 拟物黑板纹理堆叠导致字不清

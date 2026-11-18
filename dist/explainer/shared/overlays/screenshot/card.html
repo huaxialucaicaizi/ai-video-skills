@@ -1,0 +1,16 @@
+<!-- 截图卡：src 必须是用户提供的真实截图/录屏帧；禁止占位假界面 -->
+<section
+  class="clip overlay-screenshot"
+  data-start="{{START}}"
+  data-duration="{{DURATION}}"
+  data-track-index="{{TRACK}}"
+>
+  <div class="card-inner">
+    <h2 class="title">{{TITLE}}</h2>
+    <figure>
+      <img src="{{USER_SCREENSHOT_SRC}}" alt="{{ALT}}" />
+      <figcaption>{{CAPTION}}</figcaption>
+    </figure>
+    <p class="warn" data-if-missing="true">未提供真实截图：此处留白，请用户补充。</p>
+  </div>
+</section>
