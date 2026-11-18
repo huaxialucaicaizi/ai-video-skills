@@ -135,7 +135,7 @@ ai-video-skills/
 | **talking-head** | `edit-video/talking-head/` | AI/科技口播：转写 → 去口癖 → B-roll 标记 → overlays → 导出 + 剪映清单 |
 | **video-router** | `video-router/` | 最简入口：只分科普 / 口播；其他「暂不支持」 |
 
-Shared：`shared/overlays/`、`shared/styles/`（SCHEMA + 2 张卡）、`shared/subtitle-tts/`（字幕可用；配音接口预留）。
+共享模块：`shared/overlays/`、`shared/styles/`（SCHEMA + 2 张卡）、`shared/subtitle-tts/`（字幕可用；配音接口预留）。
 
 **本版不做：** `promo`（下周再定）、`data-story`、数字人方案、Windows。
 
@@ -325,18 +325,18 @@ Apache License 2.0。见 `LICENSE` 与 `NOTICE`。
 
 Office-video skills: code-generated knowledge explainers and semi-automated talking-head edits. Default renderer: **HyperFrames** ([heygen-com/hyperframes](https://github.com/heygen-com/hyperframes); follow the [official docs](https://hyperframes.heygen.com/introduction)). License: **Apache-2.0**.
 
-**Mac only for v1.** Cloud Linux may be used for smoke tests; items marked「待 Mac 实测」are not claimed as accepted. Some items are already verified on an iMac — see「Mac verification status」below.
+**Mac only for v1.** Cloud Linux may be used for smoke tests; items marked "To be tested on Mac" are not claimed as accepted. Some items are already verified on an iMac — see [Mac verification status](#en-mac) below.
 
 <a id="en-path"></a>
 ### Learning path
 
 ```
-Know what to read → Ask better → Install tools → Ship a first build → 【Use it at work】→ Make your own skill
+Know what to read → Ask better → Install tools → Ship a first build → [Use it at work] → Make your own skill
                                                                     ▲
                                                          This repo (video) sits here
 ```
 
-PPT / data / design skills hang under the same「Use it at work」slot in other repos.
+PPT / data / design skills hang under the same "Use it at work" slot in other repos.
 
 <a id="en-idea"></a>
 ### Core idea
@@ -393,7 +393,7 @@ Source: framework draft §1. Status marked as in this release.
 | Long-form clips | Classic editing | `edit-video/clip-long` | Semi-automatic | 🔜 |
 | Software tutorial screencast | Hybrid | talking-head + overlays | Semi-automatic | 🔜 |
 
-Minimal `video-router`: routes only explainer vs talking-head; replies「暂不支持」for 🔜 types.
+Minimal `video-router`: routes only explainer vs talking-head; for 🔜 types it replies "not supported yet" (the skill replies in Chinese).
 
 <a id="en-broll"></a>
 ### Six talking-head subtypes by B-roll source
@@ -414,9 +414,9 @@ Minimal `video-router`: routes only explainer vs talking-head; replies「暂不�
 | --- | --- | --- |
 | **explainer** (priority) | `code-video/explainer/` | vibe knowledge explainer: storyboard → style card → HyperFrames → captions → frame QA |
 | **talking-head** | `edit-video/talking-head/` | AI/tech talking-head: transcript → filler cleanup → B-roll marks → overlays → export + CapCut checklist |
-| **video-router** | `video-router/` | Minimal entry: explainer / talking-head only; otherwise「暂不支持」 |
+| **video-router** | `video-router/` | Minimal entry: explainer / talking-head only; otherwise replies "not supported yet" (the skill replies in Chinese) |
 
-Shared: `shared/overlays/`, `shared/styles/` (SCHEMA + 2 cards), `shared/subtitle-tts/` (captions ready; TTS hooks reserved).
+Shared modules: `shared/overlays/`, `shared/styles/` (SCHEMA + 2 cards), `shared/subtitle-tts/` (captions ready; TTS hooks reserved).
 
 **Out of scope this week:** `promo` (TBD next week), `data-story`, digital avatars, Windows.
 
@@ -433,7 +433,7 @@ Shared: `shared/overlays/`, `shared/styles/` (SCHEMA + 2 cards), `shared/subtitl
 | `dist/explainer/` | Knowledge / lesson → video (HyperFrames template + fonts) | Can render alone |
 | `dist/talking-head/` | AI/tech talking-head rough-cut workflow (overlays etc.; no render fonts in this release) | Workflow docs alone |
 
-**Install all three together.** `video-router` alone only routes; if the target skill is missing, it must tell the user to install `dist/explainer/` or `dist/talking-head/` (see that SKILL + this section).
+**Install all three together.** `video-router` alone only routes; if the target skill is missing, it must tell the user to install `dist/explainer/` or `dist/talking-head/` (see that SKILL + this [Install (Mac)](#en-install) section).
 
 #### Where to copy
 
@@ -441,7 +441,7 @@ Shared: `shared/overlays/`, `shared/styles/` (SCHEMA + 2 cards), `shared/subtitl
 | --- | --- |
 | Claude Code | Project `.claude/skills/<name>/`, or user `~/.claude/skills/<name>/` |
 | Codex | Project `.agents/skills/<name>/`, or user `~/.agents/skills/<name>/` |
-| WorkBuddy | Project `.codebuddy/skills/<name>/` (exact user-level path 待核实) |
+| WorkBuddy | Project `.codebuddy/skills/<name>/` (exact user-level path: To be verified) |
 | DeepSeek Harness | Project `.dsh/skills/<name>/` or `.agents/skills/<name>/`, or user `~/.dsh/skills/<name>/` |
 
 `<name>` is `explainer` / `talking-head` / `video-router`. DeepSeek Harness mainly scans one level under the skills root, so use flat `dist/<name>/`; do not drop the whole nested monorepo in.
@@ -456,11 +456,11 @@ cp -R dist/explainer .claude/skills/explainer
 cp -R dist/talking-head .claude/skills/talking-head
 ```
 
-Then in Claude Code, use this line to smoke-test **explainer** triggering (from `tests/triggers/explainer/should-trigger.txt`):
+Type this prompt (Chinese, meaning "make a short vibe knowledge-explainer video"):
 
 > 做一条 vibe 知识科普短视频
 
-(Full four-agent trigger matrix still「待 Mac 实测」.)
+(Full four-agent trigger matrix still: To be tested on Mac.)
 
 #### Render after install (explainer)
 
@@ -489,7 +489,7 @@ Node versions (report per tool; do not merge into one line):
 - HyperFrames / common Claude Code npm path: Node.js **22+**
 - DeepSeek Harness: Node.js **>=24.9.0** (from npm package `@deepseek-ai/dsh` `engines`; queried 2026-11-18 as `0.2.2-rc.1`)
 
-Per-agent trigger tests: **待 Mac 实测** (Claude Code / Codex / WorkBuddy / DeepSeek Harness were not installed on the prior test machine).
+Per-agent trigger tests: **To be tested on Mac** (Claude Code / Codex / WorkBuddy / DeepSeek Harness were not installed on the prior test machine).
 
 <a id="en-mac"></a>
 ### Mac verification status
@@ -501,14 +501,14 @@ Log: [`tests/mac/2026-11-18-imac.md`](tests/mac/2026-11-18-imac.md) (iMac · App
 | `scripts/doctor.sh` | ✅ verified — [log](tests/mac/2026-11-18-imac.md) |
 | `short-explainer` render (9s) | ✅ verified — [log](tests/mac/2026-11-18-imac.md) |
 | Frame grabs at 1.5s / 4.5s / 7.5s | ✅ verified — [log](tests/mac/2026-11-18-imac.md) |
-| Four-agent triggers | 待 Mac 实测 |
-| Qwen3-TTS vs CosyVoice | 待 Mac 实测 |
-| Transcription + filler cleanup | 待 Mac 实测 |
-| talking-head overlay export | 待 Mac 实测 |
-| CapCut polish steps + version | 待 Mac 实测 |
-| Full 30s explainer | 待 Mac 实测 (no 30s template in repo yet) |
-| Before/after comparison | 待 Mac 实测 |
-| WorkBuddy exact user-level path | 待 Mac 实测 |
+| Four-agent triggers | To be tested on Mac |
+| Qwen3-TTS vs CosyVoice | To be tested on Mac |
+| Transcription + filler cleanup | To be tested on Mac |
+| talking-head overlay export | To be tested on Mac |
+| CapCut polish steps + version | To be tested on Mac |
+| Full 30s explainer | To be tested on Mac (no 30s template in repo yet) |
+| Before/after comparison | To be tested on Mac |
+| WorkBuddy exact user-level path | To be tested on Mac |
 
 Observation (no code change): body/card text looks small on portrait, content is narrow; enlarge for a full 30s cut. See the Mac log.
 
@@ -539,7 +539,7 @@ python3 scripts/build_dist.py
 <a id="en-voiceover"></a>
 ### Voiceover
 
-v1 default: **captions only, no TTS**. Preset / self-clone hooks live in `shared/subtitle-tts/`; **wire after Qwen3-TTS vs CosyVoice Mac bake-off** (still pending).
+v1 default: **captions only, no TTS**. Preset / self-clone hooks live in `shared/subtitle-tts/`; **wire after Qwen3-TTS vs CosyVoice Mac bake-off** (still To be tested on Mac).
 
 <a id="en-guardrails"></a>
 ### Guardrails (summary)
@@ -547,8 +547,8 @@ v1 default: **captions only, no TTS**. Preset / self-clone hooks live in `shared
 - No synthetic humans, no cloning others' voices, no digital avatars
 - Product UI only from real screenshots or recordings
 - Public samples only with clear licenses + attribution; otherwise omit
-- No invented numbers or sources; write「待核实」when unknown
-- CapCut steps stay unmarked until Mac-verified
+- No invented numbers or sources; write "To be verified" when unknown
+- CapCut steps stay unmarked until Mac-verified (mark "To be tested on Mac")
 
 <a id="en-samples"></a>
 ### Public samples
@@ -563,7 +563,7 @@ python3 -m pip install pyyaml
 python3 scripts/ci_validate.py
 ```
 
-CI validates frontmatter, `agents/openai.yaml`, the「虚构示例」mark, 10+10 triggers, banned-token scan (`.codebuddy/` path whitelisted), `build_dist.py --check`, isolated path checks for all three packages, strict `dist/explainer` lint (0 errors) then render smoke, and `doctor.sh` for the repo plus each package on macOS.
+CI validates frontmatter, `agents/openai.yaml`, the "fictional example" mark, 10+10 triggers, banned-token scan (`.codebuddy/` path whitelisted), `build_dist.py --check`, isolated path checks for all three packages, strict `dist/explainer` lint (0 errors) then render smoke, and `doctor.sh` for the repo plus each package on macOS.
 
 <a id="en-author"></a>
 ### Author
