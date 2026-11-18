@@ -79,31 +79,31 @@ Legend: ✅ supported in this release / 🔜 planned.
 
 来源：框架稿第 1 节。状态按本版如实标注。
 
-| 视频类型 | 画面来源 | 交给谁 | 自动化程度 | 状态 |
+| 视频类型 | 路线 | 交给谁 | 自动化程度 | 状态 |
 | --- | --- | --- | --- | --- |
-| 知识科普 / 动态图解 | 画出来的 | `code-video/explainer` | 全自动 | ✅ |
-| 数据动画 | 画出来的 | `code-video/data-story` | 全自动 | 🔜 |
-| 产品宣传片 | 画出来的 | `code-video/promo` | 全自动（产品界面只用真实截图或录屏） | 🔜 |
-| 文字快闪 / 金句卡 | 画出来的 | `code-video/promo` | 全自动 | 🔜 |
-| 动画短片 / MV | 画出来的 | `code-video/animation` | 全自动 | 🔜 |
-| PPT / 课件转视频 | 画出来的 | `code-video/explainer` | 全自动 | ✅ |
-| 口播 / 真人出镜 | 拍出来的 | `edit-video/talking-head` | 半自动：AI 粗剪 + 剪映精修 | ✅（本版仅 AI/科技/工具类） |
-| 实拍（Vlog、探店、开箱、带货） | 拍出来的 | `edit-video/footage` | 半自动 | 🔜 |
-| 长视频切片 | 拍出来的 | `edit-video/clip-long` | 半自动 | 🔜 |
+| 知识科普 / 动态图解 | 代码生成 | `code-video/explainer` | 全自动 | ✅ |
+| 数据动画 | 代码生成 | `code-video/data-story` | 全自动 | 🔜 |
+| 产品宣传片 | 代码生成 | `code-video/promo` | 全自动（产品界面只用真实截图或录屏） | 🔜 |
+| 文字快闪 / 金句卡 | 代码生成 | `code-video/promo` | 全自动 | 🔜 |
+| 动画短片 / MV | 代码生成 | `code-video/animation` | 全自动 | 🔜 |
+| PPT / 课件转视频 | 代码生成 | `code-video/explainer` | 全自动 | ✅ |
+| 口播 / 真人出镜 | 古法剪辑 | `edit-video/talking-head` | 半自动：AI 粗剪 + 剪映精修 | ✅（本版仅 AI/科技/工具类） |
+| 实拍（Vlog、探店、开箱、带货） | 古法剪辑 | `edit-video/footage` | 半自动 | 🔜 |
+| 长视频切片 | 古法剪辑 | `edit-video/clip-long` | 半自动 | 🔜 |
 | 软件教程录屏 | 混合 | talking-head 主线 + overlays | 半自动 | 🔜 |
 
-| Video type | Source | Skill | Automation | Status |
+| Video type | Route | Skill | Automation | Status |
 | --- | --- | --- | --- | --- |
-| Knowledge explainer / animated diagram | Drawn | `code-video/explainer` | Fully automatic | ✅ |
-| Data motion | Drawn | `code-video/data-story` | Fully automatic | 🔜 |
-| Product promo | Drawn | `code-video/promo` | Fully automatic (real UI screenshots only) | 🔜 |
-| Kinetic text / quote cards | Drawn | `code-video/promo` | Fully automatic | 🔜 |
-| Short animation / MV | Drawn | `code-video/animation` | Fully automatic | 🔜 |
-| PPT / lesson → video | Drawn | `code-video/explainer` | Fully automatic | ✅ |
-| Talking-head | Filmed | `edit-video/talking-head` | Semi-auto: AI rough cut + CapCut polish | ✅ (AI/tech/tools only in this release) |
-| Live footage (vlog, shop, unbox, commerce) | Filmed | `edit-video/footage` | Semi-automatic | 🔜 |
-| Long-form clips | Filmed | `edit-video/clip-long` | Semi-automatic | 🔜 |
-| Software tutorial screencast | Mixed | talking-head + overlays | Semi-automatic | 🔜 |
+| Knowledge explainer / animated diagram | Code generation | `code-video/explainer` | Fully automatic | ✅ |
+| Data motion | Code generation | `code-video/data-story` | Fully automatic | 🔜 |
+| Product promo | Code generation | `code-video/promo` | Fully automatic (real UI screenshots only) | 🔜 |
+| Kinetic text / quote cards | Code generation | `code-video/promo` | Fully automatic | 🔜 |
+| Short animation / MV | Code generation | `code-video/animation` | Fully automatic | 🔜 |
+| PPT / lesson → video | Code generation | `code-video/explainer` | Fully automatic | ✅ |
+| Talking-head | Classic editing | `edit-video/talking-head` | Semi-auto: AI rough cut + CapCut polish | ✅ (AI/tech/tools only in this release) |
+| Live footage (vlog, shop, unbox, commerce) | Classic editing | `edit-video/footage` | Semi-automatic | 🔜 |
+| Long-form clips | Classic editing | `edit-video/clip-long` | Semi-automatic | 🔜 |
+| Software tutorial screencast | Hybrid | talking-head + overlays | Semi-automatic | 🔜 |
 
 最简 `video-router`：只判断科普 vs 口播；上表中 🔜 类型回复「暂不支持」。
 
