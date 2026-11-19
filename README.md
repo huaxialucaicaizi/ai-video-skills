@@ -4,8 +4,8 @@
 
 # AI Video Skills · AI 视频 Skill
 
-**面向 10 种办公视频风格的 AI 视频 skill 仓库：用「代码生成」和「古法剪辑」两条 AI 剪辑路径实现。**<br>
-AI video skills for 10 office video styles, built on two AI editing paths: code-generated and traditional editing.
+**面向 10 种办公视频风格的 AI 视频 skill 仓库：用「代码生成」和「古法剪辑」两条 AI 剪辑路径，实现全自动或半自动的视频剪辑。**<br>
+AI video skills for 10 office video styles, built on two AI editing paths, code-generated and traditional editing, for fully or semi-automated video editing.
 
 [![CI](https://github.com/huaxialucaicaizi/ai-video-skills/actions/workflows/ci.yml/badge.svg)](https://github.com/huaxialucaicaizi/ai-video-skills/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
@@ -42,7 +42,7 @@ AI video skills for 10 office video styles, built on two AI editing paths: code-
 <a id="zh-intro"></a>
 ### 一句话介绍
 
-面向 10 种办公视频风格的 AI 视频 skill 仓库：用「代码生成」和「古法剪辑」两条 AI 剪辑路径实现。本版先交付知识科普（含 PPT/课件转视频）和 AI/科技/工具类口播，其余风格见下方「10 种视频怎么分」的状态。底层渲染默认 **HyperFrames**（[heygen-com/hyperframes](https://github.com/heygen-com/hyperframes)，以[官方文档](https://hyperframes.heygen.com/introduction)为准）。许可证 **Apache-2.0**。
+面向 10 种办公视频风格的 AI 视频 skill 仓库：用「代码生成」和「古法剪辑」两条 AI 剪辑路径，实现全自动或半自动的视频剪辑。本版先交付知识科普（含 PPT/课件转视频）和 AI/科技/工具类口播，其余风格见下方「10 种视频怎么分」的状态。底层渲染默认 **HyperFrames**（[heygen-com/hyperframes](https://github.com/heygen-com/hyperframes)，以[官方文档](https://hyperframes.heygen.com/introduction)为准）。许可证 **Apache-2.0**。
 
 **目前仅支持 Mac。** 云端可用于开发自检；凡标注「待 Mac 实测」的条目，不以 Linux 结果冒充已验收。部分项已在 iMac 实测，见下方「Mac 实测状态」。
 
@@ -327,7 +327,7 @@ Apache License 2.0。见 `LICENSE` 与 `NOTICE`。
 <a id="en-intro"></a>
 ### In one sentence
 
-AI video skills for 10 office video styles, built on two AI editing paths: code-generated and traditional editing. This release ships knowledge explainers (including PPT / lesson → video) and AI / tech / tools talking-head first; see status under [Ten video types](#en-types) for the rest. Default renderer: **HyperFrames** ([heygen-com/hyperframes](https://github.com/heygen-com/hyperframes); follow the [official docs](https://hyperframes.heygen.com/introduction)). License: **Apache-2.0**.
+AI video skills for 10 office video styles, built on two AI editing paths, code-generated and traditional editing, for fully or semi-automated video editing. This release ships knowledge explainers (including PPT / lesson → video) and AI / tech / tools talking-head first; see status under [Ten video types](#en-types) for the rest. Default renderer: **HyperFrames** ([heygen-com/hyperframes](https://github.com/heygen-com/hyperframes); follow the [official docs](https://hyperframes.heygen.com/introduction)). License: **Apache-2.0**.
 
 **Mac only for v1.** Cloud Linux may be used for smoke tests; items marked "To be tested on Mac" are not claimed as accepted. Some items are already verified on an iMac — see [Mac verification status](#en-mac) below.
 
