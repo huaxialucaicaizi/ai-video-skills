@@ -1,0 +1,14 @@
+ai-video-skills
+Copyright 2026 华夏路菜菜子
+
+This product includes software developed for AI office video skills.
+Author note: 华夏路菜菜子：前大厂 AI 产品增长，现 AI 创业者
+
+Bundled fonts:
+- Noto Sans SC / Source Han Sans lineage fonts under SIL Open Font License 1.1
+  See shared/fonts/OFL.txt
+
+Third-party runtime (not bundled as source in this tree unless installed by the user):
+- HyperFrames (Apache-2.0) — https://github.com/heygen-com/hyperframes
+- GSAP is installed locally via npm for rendering; GSAP uses its Standard License
+  (commercial use allowed; not an OSI open-source license). See https://gsap.com/standard-license

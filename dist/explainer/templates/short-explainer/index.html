@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>short-explainer · 虚构示例</title>
+    <!-- GSAP: npm local file only — do not use jsDelivr / CDN -->
+    <script src="./node_modules/gsap/dist/gsap.min.js"></script>
+    <style>
+      /* Fonts: ./fonts (synced from shared/fonts, OFL) — no CDN, no parent traversal */
+      @font-face {
+        font-family: "Noto Sans SC";
+        src: url("./fonts/NotoSansSC-Regular.woff") format("woff");
+        font-weight: 400;
+        font-style: normal;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Noto Sans SC";
+        src: url("./fonts/NotoSansSC-Bold.woff") format("woff");
+        font-weight: 700;
+        font-style: normal;
+        font-display: block;
+      }
+
+      :root {
+        --bg: #0f1c24;
+        --text: #f5f7fa;
+        --accent: #2f6fed;
+        --secondary: #e8eef2;
+        --safe-x: 80px;
+        --safe-y: 160px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #000;
+      }
+      #root {
+        position: relative;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Noto Sans SC", sans-serif;
+      }
+      .clip {
+        position: absolute;
+        inset: 0;
+      }
+      /* Center content vertically within the safe area (not top-quarter only) */
+      .safe {
+        position: absolute;
+        left: var(--safe-x);
+        right: var(--safe-x);
+        top: var(--safe-y);
+        bottom: calc(var(--safe-y) + 160px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 40px;
+      }
+      .safe > .stack {
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+      }
+      .eyebrow {
+        font-size: 32px;
+        letter-spacing: 0.08em;
+        color: var(--accent);
+        margin: 0;
+        font-weight: 700;
+      }
+      h1 {
+        font-size: 72px;
+        line-height: 1.2;
+        margin: 0;
+        font-weight: 700;
+      }
+      h2 {
+        font-size: 56px;
+        line-height: 1.25;
+        margin: 0;
+        font-weight: 700;
+      }
+      .body {
+        font-size: 36px;
+        line-height: 1.45;
+        margin: 0;
+        max-width: 900px;
+      }
+      .subtitle {
+        position: absolute;
+        left: var(--safe-x);
+        right: var(--safe-x);
+        bottom: var(--safe-y);
+        font-size: 48px;
+        line-height: 1.35;
+        font-weight: 700;
+        margin: 0;
+        text-align: left;
+      }
+      .card {
+        background: rgba(232, 238, 242, 0.08);
+        border-left: 6px solid var(--accent);
+        padding: 28px 32px;
+        border-radius: 0;
+      }
+      .card p {
+        font-size: 34px;
+        margin: 0;
+        line-height: 1.4;
+      }
+
+      /* Steps overlay (from shared/overlays/steps) — badge >= 32px */
+      .overlay-steps .steps {
+        list-style: none;
+        padding: 0;
+        margin: 12px 0 0;
+      }
+      .overlay-steps .steps li {
+        display: flex;
+        gap: 24px;
+        align-items: flex-start;
+        margin-bottom: 36px;
+      }
+      .overlay-steps .steps li:last-child {
+        margin-bottom: 0;
+      }
+      .overlay-steps .n {
+        display: inline-flex;
+        width: 56px;
+        height: 56px;
+        align-items: center;
+        justify-content: center;
+        background: var(--accent);
+        color: var(--text);
+        border-radius: 0;
+        font-size: 32px;
+        font-weight: 700;
+        flex: none;
+      }
+      .overlay-steps .t {
+        font-size: 34px;
+        line-height: 1.4;
+        padding-top: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="9"
+      data-width="1080"
+      data-height="1920"
+      data-fps="30"
+    >
+      <!-- Shot 1: 0–3s title — vertically centered mid-frame -->
+      <section class="clip" id="shot1" data-start="0" data-duration="3" data-track-index="1">
+        <div class="safe">
+          <div class="stack">
+            <p class="eyebrow" id="s1-eye">VIBE 科普</p>
+            <h1 id="s1-title">什么是 token？</h1>
+            <p class="body" id="s1-body">用一分钟搞懂大模型计费里的「字数单位」。</p>
+          </div>
+          <div class="card" id="s1-card">
+            <p>先建立直觉，再看计费与长度怎么估。</p>
+          </div>
+        </div>
+        <p class="subtitle" id="s1-sub">token：模型读写文本的基本单位</p>
+      </section>
+
+      <!-- Shot 2: 3–6s steps overlay card — vertically centered -->
+      <section
+        class="clip overlay-steps"
+        id="shot2"
+        data-start="3"
+        data-duration="3"
+        data-track-index="1"
+      >
+        <div class="safe">
+          <h2 class="title" id="s2-title">三步理解它</h2>
+          <ol class="steps" id="s2-steps">
+            <li>
+              <span class="n">1</span>
+              <span class="t">把文字切成小块</span>
+            </li>
+            <li>
+              <span class="n">2</span>
+              <span class="t">费用和长度，往往按这些小块计</span>
+            </li>
+            <li>
+              <span class="n">3</span>
+              <span class="t">对比前先看当前模型的官方说明</span>
+            </li>
+          </ol>
+        </div>
+        <p class="subtitle" id="s2-sub">计费与长度，常按 token 估算</p>
+      </section>
+
+      <!-- Shot 3: 6–9s caveat — vertically centered -->
+      <section class="clip" id="shot3" data-start="6" data-duration="3" data-track-index="1">
+        <div class="safe">
+          <h2 id="s3-title">注意一点</h2>
+          <p class="body" id="s3-body">同样一句中文，不同模型切出来的 token 数可能不一样。</p>
+          <div class="card" id="s3-card">
+            <p>对比数字前，先查当前模型的官方说明。</p>
+          </div>
+        </div>
+        <p class="subtitle" id="s3-sub">分词因模型而异，以官方说明为准</p>
+      </section>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      tl.fromTo(
+        "#s1-eye",
+        { opacity: 0, y: 36 },
+        { opacity: 1, y: 0, duration: 0.55, ease: "back.out(1.6)" },
+        0.15,
+      );
+      tl.fromTo(
+        "#s1-title",
+        { opacity: 0, y: 48 },
+        { opacity: 1, y: 0, duration: 0.65, ease: "power3.out" },
+        0.28,
+      );
+      tl.fromTo(
+        "#s1-body",
+        { opacity: 0, y: 28 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+        0.45,
+      );
+      tl.fromTo(
+        "#s1-card",
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" },
+        0.55,
+      );
+      tl.fromTo(
+        "#s1-sub",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" },
+        0.6,
+      );
+
+      tl.fromTo(
+        "#s2-title",
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "back.out(1.4)" },
+        3.1,
+      );
+      tl.fromTo(
+        "#s2-steps li",
+        { opacity: 0, y: 28 },
+        { opacity: 1, y: 0, duration: 0.45, stagger: 0.18, ease: "power3.out" },
+        3.25,
+      );
+      tl.fromTo(
+        "#s2-sub",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" },
+        3.5,
+      );
+
+      tl.fromTo(
+        "#s3-title",
+        { opacity: 0, y: 48 },
+        { opacity: 1, y: 0, duration: 0.55, ease: "back.out(1.4)" },
+        6.1,
+      );
+      tl.fromTo(
+        "#s3-body",
+        { opacity: 0, y: 28 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+        6.25,
+      );
+      tl.fromTo(
+        "#s3-card",
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" },
+        6.4,
+      );
+      tl.fromTo(
+        "#s3-sub",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" },
+        6.45,
+      );
+
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>

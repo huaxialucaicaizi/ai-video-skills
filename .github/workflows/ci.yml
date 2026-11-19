@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: |
+          pip install pyyaml
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Content checks (frontmatter, triggers, fiction mark, banned words)
+        run: python3 scripts/ci_validate.py
+
+      - name: Rebuild dist/ and fail if committed packages differ
+        run: python3 scripts/build_dist.py --check
+
+      - name: Path-check all dist packages (isolated copy)
+        run: |
+          python3 scripts/ci_package_check.py dist/video-router
+          python3 scripts/ci_package_check.py dist/talking-head
+          python3 scripts/ci_package_check.py dist/explainer
+
+      - name: dist/explainer lint(0 errors) then render smoke
+        run: |
+          chmod +x scripts/ci_dist_smoke.sh scripts/doctor.sh dist/*/doctor.sh || true
+          ./scripts/ci_dist_smoke.sh
+
+      - name: Check markdown links
+        uses: lycheeverse/lychee-action@v1
+        with:
+          args: >-
+            --verbose
+            --no-progress
+            --max-retries 3
+            --retry-wait-time 2
+            --timeout 10
+            --accept 200,204,206,429,403
+            --exclude-mail
+            --exclude 'https://github.com/huaxialucaicaizi/ai-video-skills/(issues|discussions|security)'
+            --exclude 'https://linux.do'
+            --exclude 'https://t.me/'
+            --exclude 'https://mp.weixin.qq.com'
+            '**/*.md'
+          fail: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  doctor-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install ffmpeg
+        run: brew list ffmpeg >/dev/null 2>&1 || brew install ffmpeg
+
+      - name: Run repo doctor.sh
+        run: |
+          chmod +x scripts/doctor.sh
+          ./scripts/doctor.sh
+
+      - name: Path-check + doctor.sh inside each dist package (isolated)
+        run: |
+          chmod +x dist/*/doctor.sh scripts/ci_package_check.py
+          python3 scripts/ci_package_check.py dist/video-router --run-doctor
+          python3 scripts/ci_package_check.py dist/talking-head --run-doctor
+          python3 scripts/ci_package_check.py dist/explainer --run-doctor

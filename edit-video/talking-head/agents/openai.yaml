@@ -1,0 +1,4 @@
+interface:
+  display_name: Talking Head
+  short_description: AI/科技口播粗剪：转写、去口癖、B-roll 标记、叠层导出与剪映精修清单。
+  default_prompt: 帮我粗剪这段 AI 科普口播：去口癖、标 B-roll、出字幕和剪映精修清单。

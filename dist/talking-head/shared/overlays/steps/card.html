@@ -1,0 +1,15 @@
+<!-- 步骤卡：2–4 步；避免「每页三卡片」装饰堆砌，步骤本身可以是列表 -->
+<section
+  class="clip overlay-steps"
+  data-start="{{START}}"
+  data-duration="{{DURATION}}"
+  data-track-index="{{TRACK}}"
+>
+  <div class="card-inner">
+    <h2 class="title">{{TITLE}}</h2>
+    <ol class="steps">
+      <!-- 重复 step 项：<li><span class="n">1</span><span class="t">文案</span></li> -->
+      {{STEPS_HTML}}
+    </ol>
+  </div>
+</section>
