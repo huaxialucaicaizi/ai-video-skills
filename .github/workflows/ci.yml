@@ -43,11 +43,8 @@ jobs:
             fi
           done
 
-      - name: All dist templates lint(0 errors) then render smoke
-        run: |
-          chmod +x scripts/ci_render_all.sh scripts/doctor.sh dist/*/doctor.sh || true
-          ./scripts/ci_render_all.sh dist
-
+      # Run before template render: npm install creates node_modules with third-party
+      # READMEs full of stale links that must not fail our docs check.
       - name: Check markdown links
         uses: lycheeverse/lychee-action@v1
         with:
@@ -59,6 +56,9 @@ jobs:
             --timeout 10
             --accept 200,204,206,429,403
             --exclude-mail
+            --exclude-path '**/node_modules/**'
+            --exclude-path '**/renders/**'
+            --exclude-path '**/tmp-render/**'
             --exclude 'https://github.com/huaxialucaicaizi/ai-video-skills/(issues|discussions|security)'
             --exclude 'https://linux.do'
             --exclude 'https://t.me/'
@@ -67,6 +67,11 @@ jobs:
           fail: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: All dist templates lint(0 errors) then render smoke
+        run: |
+          chmod +x scripts/ci_render_all.sh scripts/doctor.sh dist/*/doctor.sh || true
+          ./scripts/ci_render_all.sh dist
 
   doctor-macos:
     runs-on: macos-latest

@@ -7,6 +7,7 @@
 - `dist/` 按显式清单生成 9 个安装包；`make release` 打 zip 供 Claude 桌面版上传（zip 不入库）
 - README：双语技能名 + 使用场景；去掉徽章；主路径 Claude 桌面版 zip 安装
 - 修复 `ci_render_all.sh`：相对路径 `cd` 导致第二个模板起找不到目录（CI 多模板冒烟）
+- CI：markdown 链接检查移到模板渲染之前，并排除 `node_modules` / `renders`（避免依赖 README 脏链）
 
 ## 0.1.0 — 2026-11-18
 
