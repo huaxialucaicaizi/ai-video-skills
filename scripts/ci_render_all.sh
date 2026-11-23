@@ -3,7 +3,13 @@
 # Strict: lint must report 0 errors before each render.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-SRC_ROOT="${1:-${ROOT}/dist}"
+SRC_ARG="${1:-${ROOT}/dist}"
+# Always resolve to an absolute path so successive `cd` into templates cannot break the next find result.
+if [[ "${SRC_ARG}" = /* ]]; then
+  SRC_ROOT="${SRC_ARG}"
+else
+  SRC_ROOT="$(cd "${ROOT}/${SRC_ARG}" && pwd)"
+fi
 mapfile -t TPLS < <(find "${SRC_ROOT}" -type f -path "*/templates/*/package.json" | sort)
 if [[ ${#TPLS[@]} -eq 0 ]]; then
   echo "FAIL: no templates under ${SRC_ROOT}"
@@ -13,9 +19,10 @@ mkdir -p "${ROOT}/tmp-render"
 REPORT="${ROOT}/tmp-render/render-report.txt"
 : > "${REPORT}"
 for pkg_json in "${TPLS[@]}"; do
-  TPL="$(dirname "${pkg_json}")"
+  TPL="$(cd "$(dirname "${pkg_json}")" && pwd)"
   NAME="$(basename "${TPL}")"
-  echo "== ${TPL#$SRC_ROOT/} =="
+  REL="${TPL#${SRC_ROOT}/}"
+  echo "== ${REL} =="
   cd "${TPL}"
   if grep -E "url\([\"']?\.\./" index.html; then
     echo "FAIL: parent-traversal URL in ${TPL}/index.html"
@@ -42,6 +49,7 @@ for pkg_json in "${TPLS[@]}"; do
   WH="$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0:s=x "${OUT}")"
   SIZE="$(wc -c < "${OUT}" | tr -d " ")"
   echo "SUMMARY ${NAME}: ${DUR}s ${WH} bytes=${SIZE}"
-  echo "${NAME}\t${DUR}\t${WH}\t${SIZE}\t${OUT}" >> "${REPORT}"
+  echo -e "${NAME}\t${DUR}\t${WH}\t${SIZE}\t${TPL}/${OUT}" >> "${REPORT}"
+  cd "${ROOT}"
 done
 echo "OK all templates rendered; report ${REPORT}"
