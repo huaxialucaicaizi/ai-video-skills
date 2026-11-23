@@ -37,14 +37,16 @@ jobs:
 
       - name: Path-check all dist packages (isolated copy)
         run: |
-          python3 scripts/ci_package_check.py dist/video-router
-          python3 scripts/ci_package_check.py dist/talking-head
-          python3 scripts/ci_package_check.py dist/explainer
+          for d in dist/*/; do
+            if [[ -f "${d}SKILL.md" ]]; then
+              python3 scripts/ci_package_check.py "$d"
+            fi
+          done
 
-      - name: dist/explainer lint(0 errors) then render smoke
+      - name: All dist templates lint(0 errors) then render smoke
         run: |
-          chmod +x scripts/ci_dist_smoke.sh scripts/doctor.sh dist/*/doctor.sh || true
-          ./scripts/ci_dist_smoke.sh
+          chmod +x scripts/ci_render_all.sh scripts/doctor.sh dist/*/doctor.sh || true
+          ./scripts/ci_render_all.sh dist
 
       - name: Check markdown links
         uses: lycheeverse/lychee-action@v1
@@ -83,6 +85,8 @@ jobs:
       - name: Path-check + doctor.sh inside each dist package (isolated)
         run: |
           chmod +x dist/*/doctor.sh scripts/ci_package_check.py
-          python3 scripts/ci_package_check.py dist/video-router --run-doctor
-          python3 scripts/ci_package_check.py dist/talking-head --run-doctor
-          python3 scripts/ci_package_check.py dist/explainer --run-doctor
+          for d in dist/*/; do
+            if [[ -f "${d}SKILL.md" ]]; then
+              python3 scripts/ci_package_check.py "$d" --run-doctor
+            fi
+          done

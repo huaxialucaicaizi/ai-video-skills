@@ -38,7 +38,7 @@ AI video skills for 10 office video styles, built on two AI editing paths, code-
 <a id="zh-intro"></a>
 ### 一句话介绍
 
-面向 10 种办公视频风格的 AI 视频 skill 仓库：用「代码生成」和「古法剪辑」两条 AI 剪辑路径，实现全自动或半自动的视频剪辑。本版先交付知识科普（含 PPT/课件转视频）和 AI/科技/工具类口播，其余风格见下方「10 种视频怎么分」的状态。底层渲染默认 **HyperFrames**（[heygen-com/hyperframes](https://github.com/heygen-com/hyperframes)，以[官方文档](https://hyperframes.heygen.com/introduction)为准）。许可证 **Apache-2.0**。
+面向 10 种办公视频风格的 AI 视频 skill 仓库：用「代码生成」和「古法剪辑」两条 AI 剪辑路径，实现全自动或半自动的视频剪辑。本版已交付全部 10 种风格对应 skill（见「10 种视频怎么分」与「本版已交付 skill」）；客户端触发与部分半自动合成步骤仍标「待 Mac 实测」。底层渲染默认 **HyperFrames**（[heygen-com/hyperframes](https://github.com/heygen-com/hyperframes)，以[官方文档](https://hyperframes.heygen.com/introduction)为准）。许可证 **Apache-2.0**。
 
 **目前仅支持 Mac。** 云端可用于开发自检；凡标注「待 Mac 实测」的条目，不以 Linux 结果冒充已验收。部分项已在 iMac 实测，见下方「Mac 实测状态」。
 
@@ -73,46 +73,48 @@ PPT / 数据分析 / 设计等同挂在「用进工作」下的其他仓库。
 
 ```
 ai-video-skills/
-├── video-router/           ✅ 本版：最简入口（只分科普 / 口播）
+├── video-router/           ✅ 本版：按 10 种风格分流
 ├── code-video/
-│   ├── explainer/          ✅ 本版：知识科普 / 课件转视频
-│   ├── data-story/         🔜 规划中
-│   ├── promo/              🔜 规划中（下周再定是否复用 video-shotcraft）
-│   └── animation/          🔜 规划中
+│   ├── explainer/          ✅ 知识科普 / PPT课件转视频
+│   ├── data-story/         ✅ 数据动画（示例数据须标注）
+│   ├── promo/              ✅ 产品宣传片 + 文字快闪/金句卡
+│   └── animation/          ✅ 动画短片 / MV 风
 ├── edit-video/
-│   ├── talking-head/       ✅ 本版：AI / 科技 / 工具类口播
-│   ├── clip-long/          🔜 规划中
-│   └── footage/            🔜 规划中
+│   ├── talking-head/       ✅ AI / 科技 / 工具类口播
+│   ├── footage/            ✅ 探店 / Vlog / 开箱 / 带货实拍
+│   ├── clip-long/          ✅ 长视频切片
+│   └── screencast/         ✅ 软件教程录屏（混合）
 ├── shared/
-│   ├── subtitle-tts/       ✅ 本版：字幕 SRT；配音接口预留
-│   ├── overlays/           ✅ 本版最小：概念 / 步骤 / 数据 / 截图卡
-│   └── styles/             ✅ 本版：SCHEMA + 2 张风格卡
+│   ├── subtitle-tts/       ✅ 字幕 SRT；配音接口预留
+│   ├── overlays/           ✅ 概念 / 步骤 / 数据 / 截图 + screencast
+│   └── styles/             ✅ SCHEMA + 2 张风格卡
+├── dist/                   ✅ 各 skill 自包含安装包
 ├── examples/
 ├── tests/
-└── scripts/doctor.sh
+└── scripts/
 ```
 
-图例：✅ 本版支持 / 🔜 规划中。
+图例：✅ 本版已交付 skill / 模板或流程文档。客户端触发与部分合成步骤仍标「待 Mac 实测」。
 
 <a id="zh-types"></a>
 ### 10 种视频怎么分
 
-来源：框架稿第 1 节。状态按本版如实标注。
+来源：框架稿第 1 节。本版 10 种均已交付对应 skill；标 ✅。客户端触发 / 实拍合成等仍「待 Mac 实测」的，见下方 Mac 实测表与各 skill 正文。
 
 | 视频类型 | 路线 | 交给谁 | 自动化程度 | 状态 |
 | --- | --- | --- | --- | --- |
 | 知识科普 / 动态图解 | 代码生成 | `code-video/explainer` | 全自动 | ✅ |
-| 数据动画 | 代码生成 | `code-video/data-story` | 全自动 | 🔜 |
-| 产品宣传片 | 代码生成 | `code-video/promo` | 全自动（产品界面只用真实截图或录屏） | 🔜 |
-| 文字快闪 / 金句卡 | 代码生成 | `code-video/promo` | 全自动 | 🔜 |
-| 动画短片 / MV | 代码生成 | `code-video/animation` | 全自动 | 🔜 |
+| 数据动画 | 代码生成 | `code-video/data-story` | 全自动 | ✅ |
+| 产品宣传片 | 代码生成 | `code-video/promo` | 全自动（产品界面只用真实截图或录屏；否则「示例」占位） | ✅ |
+| 文字快闪 / 金句卡 | 代码生成 | `code-video/promo` | 全自动 | ✅ |
+| 动画短片 / MV | 代码生成 | `code-video/animation` | 全自动（默认可静音；无版权音乐） | ✅ |
 | PPT / 课件转视频 | 代码生成 | `code-video/explainer` | 全自动 | ✅ |
 | 口播 / 真人出镜 | 古法剪辑 | `edit-video/talking-head` | 半自动：AI 粗剪 + 剪映精修 | ✅（本版仅 AI/科技/工具类） |
-| 实拍（Vlog、探店、开箱、带货） | 古法剪辑 | `edit-video/footage` | 半自动 | 🔜 |
-| 长视频切片 | 古法剪辑 | `edit-video/clip-long` | 半自动 | 🔜 |
-| 软件教程录屏 | 混合 | talking-head 主线 + overlays | 半自动 | 🔜 |
+| 实拍（Vlog、探店、开箱、带货） | 古法剪辑 | `edit-video/footage` | 半自动（流程待 Mac 实测） | ✅ |
+| 长视频切片 | 古法剪辑 | `edit-video/clip-long` | 半自动（流程待 Mac 实测） | ✅ |
+| 软件教程录屏 | 混合 | `edit-video/screencast` | 半自动（叠层合成待 Mac 实测） | ✅ |
 
-最简 `video-router`：只判断科普 vs 口播；上表中 🔜 类型回复「暂不支持」。
+`video-router`：按上表 10 种分流；数字人拒绝；表外类型回复「暂不支持」。
 
 <a id="zh-broll"></a>
 ### 口播按 B-roll 来源分 6 种
@@ -131,26 +133,38 @@ ai-video-skills/
 
 | Skill | 路径 | 使用场景 | 做什么 |
 | --- | --- | --- | --- |
-| **Explainer · 知识科普**（优先） | `code-video/explainer/` | 要把主题 / 大纲 / 课件做成无真人出镜的知识科普短视频 | 分镜 → 风格卡 → HyperFrames → 字幕 → 逐帧自检 |
-| **Talking-head · AI/科技口播** | `edit-video/talking-head/` | 已有真人口播或讲解录屏，要做 AI / 科技 / 工具类粗剪与叠层 | 转写 → 去口癖 → B-roll 标记 → overlays → 导出 + 剪映清单 |
-| **Video-router · 视频入口** | `video-router/` | 还没想清走科普还是口播，先分流并检查剪辑环境 | 只分科普 / 口播；其他「暂不支持」 |
+| **Video-router · 视频入口** | `video-router/` | 还没选风格，先分流并检查环境 | 按 10 种风格路由；数字人拒绝；表外「暂不支持」 |
+| **Explainer · 知识科普** | `code-video/explainer/` | 主题 / 大纲 / 课件 → 无真人出镜科普短视频 | HyperFrames 模板 + 风格卡 + 字幕 + 逐帧自检 |
+| **Data-story · 数据动画** | `code-video/data-story/` | CSV / 指标做成数据动画 | 短模板渲染；画面须标「示例数据」 |
+| **Promo · 宣传片/金句** | `code-video/promo/` | 产品宣传片或文字快闪 / 金句卡 | 两套模板；界面用真实截图或「示例」占位 |
+| **Animation · 动画短片** | `code-video/animation/` | 动画短片 / MV 风节拍动画 | 形状+文字节拍模板；默认可静音 |
+| **Talking-head · AI/科技口播** | `edit-video/talking-head/` | 真人口播要 AI/科技/工具类粗剪 | 转写 → 去口癖 → B-roll → overlays → 剪映清单 |
+| **Footage · 实拍粗剪** | `edit-video/footage/` | 探店 / Vlog / 开箱 / 带货实拍 | 镜头表、ffmpeg 粗剪列表、字幕、剪映清单 |
+| **Clip-long · 长视频切片** | `edit-video/clip-long/` | 长视频切短、竖屏再构图 | 转写 → 高光时间码 → ffmpeg → 字幕 |
+| **Screencast · 软件教程** | `edit-video/screencast/` | 软件录屏教程要步骤/放大/键盘提示 | 混合：录屏主线 + overlays |
 
-共享模块：`shared/overlays/`、`shared/styles/`（SCHEMA + 2 张卡）、`shared/subtitle-tts/`（字幕可用；配音接口预留）。
+共享模块：`shared/overlays/`、`shared/styles/`、`shared/subtitle-tts/`（配音接口预留，待 Mac 实测）。
 
-**本版不做：** `promo`（下周再定）、`data-story`、数字人方案、Windows。
+**本版不做：** 数字人方案、Windows。
 
 <a id="zh-install"></a>
 ### 安装（Mac）
 
-`dist/` 由 `scripts/build_dist.py` 按显式清单生成并带齐依赖；每个包含 `LICENSE` 与 `NOTICE`；**不要手改 `dist/`**，改源码后重新运行构建脚本再提交。**推荐三个包一起装**（router 只分流，单独装用不起来）。
+`dist/` 由 `scripts/build_dist.py` 按显式清单生成并带齐依赖；每个包含 `LICENSE` 与 `NOTICE`；**不要手改 `dist/`**，改源码后重新运行构建脚本再提交。**推荐一次装齐全部 `dist/` 包**（router 只分流，单独装用不起来）。
 
 #### 三个包的关系
 
 | 包 | 做什么 | 依赖 |
 | --- | --- | --- |
-| `dist/video-router/` | 只把用户分到科普或口播；自己不渲染画面 | 单独用不起来 |
-| `dist/explainer/` | 知识科普 / 课件转视频（含 HyperFrames 模板与字体） | 可独立渲染 |
-| `dist/talking-head/` | AI/科技口播粗剪流程（overlays 等；本版不带渲染字体） | 可独立跑流程文档 |
+| `dist/video-router/` | 按 10 种风格分流；不渲染 | 单独用不起来 |
+| `dist/explainer/` | 知识科普 / 课件（含模板与字体） | 可独立渲染 |
+| `dist/data-story/` | 数据动画模板（示例数据角标） | 可独立渲染 |
+| `dist/promo/` | 宣传片 + 金句快闪两套模板 | 可独立渲染 |
+| `dist/animation/` | 动画短片 / MV 风模板 | 可独立渲染 |
+| `dist/talking-head/` | AI/科技口播流程（无渲染字体） | 流程文档 |
+| `dist/footage/` | 实拍半自动粗剪 | 流程文档 |
+| `dist/clip-long/` | 长视频切片 | 流程文档 |
+| `dist/screencast/` | 软件教程 overlays | 流程文档 |
 
 #### 主路径：Claude 桌面版（上传 zip）
 
@@ -158,13 +172,11 @@ ai-video-skills/
 
 ```bash
 make release
-# → release/video-router.zip
-# → release/explainer.zip
-# → release/talking-head.zip
+# → release/<skill>.zip（共 9 个：router + 8 个子 skill）
 ```
 
 2. 打开 **Claude 桌面版**，进入 Skills（技能）相关设置。
-3. 分别上传上述三个 zip，并启用它们。
+3. 分别上传上述 zip，并启用它们。
 4. 菜单文案以你本机 Claude 桌面版为准（不同版本可能略有差异）；若找不到上传入口，改用下方「次路径」或查阅 Claude 当前帮助文档。
 
 上传后可用这句话测 **Explainer** 是否触发（选自 `tests/triggers/explainer/should-trigger.txt`）：
@@ -186,11 +198,13 @@ make release
 `<name>` 为 `explainer` / `talking-head` / `video-router`。DeepSeek Harness 主要扫描技能根下一层目录，因此必须用扁平的 `dist/<name>/`。
 
 ```bash
-# Claude Code 示例（项目根）
+# Claude Code 示例（项目根）：复制全部 dist 包
 mkdir -p .claude/skills
-cp -R dist/video-router .claude/skills/video-router
-cp -R dist/explainer .claude/skills/explainer
-cp -R dist/talking-head .claude/skills/talking-head
+for d in dist/*/; do
+  name="$(basename "$d")"
+  [[ -f "$d/SKILL.md" ]] || continue
+  cp -R "$d" ".claude/skills/$name"
+done
 ```
 
 #### 装好后渲染示例（explainer）
@@ -334,7 +348,7 @@ Apache License 2.0。见 `LICENSE` 与 `NOTICE`。
 <a id="en-intro"></a>
 ### In one sentence
 
-AI video skills for 10 office video styles, built on two AI editing paths, code-generated and traditional editing, for fully or semi-automated video editing. This release ships knowledge explainers (including PPT / lesson → video) and AI / tech / tools talking-head first; see status under [Ten video types](#en-types) for the rest. Default renderer: **HyperFrames** ([heygen-com/hyperframes](https://github.com/heygen-com/hyperframes); follow the [official docs](https://hyperframes.heygen.com/introduction)). License: **Apache-2.0**.
+AI video skills for 10 office video styles, built on two AI editing paths, code-generated and traditional editing, for fully or semi-automated video editing. This release ships skills for all 10 styles (see [Ten video types](#en-types) and [Skills in this release](#en-skills)); client triggers and some semi-auto compositing steps remain To be tested on Mac. Default renderer: **HyperFrames** ([heygen-com/hyperframes](https://github.com/heygen-com/hyperframes); follow the [official docs](https://hyperframes.heygen.com/introduction)). License: **Apache-2.0**.
 
 **Mac only for v1.** Cloud Linux may be used for smoke tests; items marked "To be tested on Mac" are not claimed as accepted. Some items are already verified on an iMac — see [Mac verification status](#en-mac) below.
 
@@ -369,46 +383,48 @@ The 10 styles map to two AI editing paths: code generation and classic editing (
 
 ```
 ai-video-skills/
-├── video-router/           ✅ this release: minimal entry (explainer / talking-head only)
+├── video-router/           ✅ routes all 10 styles
 ├── code-video/
-│   ├── explainer/          ✅ this release: knowledge / lesson → video
-│   ├── data-story/         🔜 planned
-│   ├── promo/              🔜 planned (reuse of video-shotcraft TBD next week)
-│   └── animation/          🔜 planned
+│   ├── explainer/          ✅ knowledge / PPT → video
+│   ├── data-story/         ✅ data motion (label sample data)
+│   ├── promo/              ✅ product promo + kinetic/quote cards
+│   └── animation/          ✅ short animation / MV-style
 ├── edit-video/
-│   ├── talking-head/       ✅ this release: AI / tech / tools talking-head
-│   ├── clip-long/          🔜 planned
-│   └── footage/            🔜 planned
+│   ├── talking-head/       ✅ AI / tech / tools talking-head
+│   ├── footage/            ✅ vlog / shop / unbox / commerce
+│   ├── clip-long/          ✅ long → clips
+│   └── screencast/         ✅ software tutorial (hybrid)
 ├── shared/
-│   ├── subtitle-tts/       ✅ this release: SRT captions; TTS hooks reserved
-│   ├── overlays/           ✅ minimal this release: concept / steps / data / screenshot cards
-│   └── styles/             ✅ this release: SCHEMA + 2 style cards
+│   ├── subtitle-tts/       ✅ SRT captions; TTS hooks reserved
+│   ├── overlays/           ✅ concept / steps / data / screenshot + screencast
+│   └── styles/             ✅ SCHEMA + 2 style cards
+├── dist/                   ✅ self-contained install packages
 ├── examples/
 ├── tests/
-└── scripts/doctor.sh
+└── scripts/
 ```
 
-Legend: ✅ supported in this release / 🔜 planned.
+Legend: ✅ shipped this release. Client triggers and some semi-auto compositing steps remain "To be tested on Mac".
 
 <a id="en-types"></a>
 ### Ten video types
 
-Source: framework draft §1. Status marked as in this release.
+Source: framework draft §1. All 10 styles ship a skill (✅). Client triggers / some semi-auto steps remain "To be tested on Mac".
 
 | Video type | Route | Skill | Automation | Status |
 | --- | --- | --- | --- | --- |
 | Knowledge explainer / animated diagram | Code generation | `code-video/explainer` | Fully automatic | ✅ |
-| Data motion | Code generation | `code-video/data-story` | Fully automatic | 🔜 |
-| Product promo | Code generation | `code-video/promo` | Fully automatic (real UI screenshots only) | 🔜 |
-| Kinetic text / quote cards | Code generation | `code-video/promo` | Fully automatic | 🔜 |
-| Short animation / MV | Code generation | `code-video/animation` | Fully automatic | 🔜 |
+| Data motion | Code generation | `code-video/data-story` | Fully automatic | ✅ |
+| Product promo | Code generation | `code-video/promo` | Fully automatic (real UI screenshots; else 示例 placeholder) | ✅ |
+| Kinetic text / quote cards | Code generation | `code-video/promo` | Fully automatic | ✅ |
+| Short animation / MV | Code generation | `code-video/animation` | Fully automatic (silent OK; no copyrighted music) | ✅ |
 | PPT / lesson → video | Code generation | `code-video/explainer` | Fully automatic | ✅ |
 | Talking-head | Classic editing | `edit-video/talking-head` | Semi-auto: AI rough cut + CapCut polish | ✅ (AI/tech/tools only in this release) |
-| Live footage (vlog, shop, unbox, commerce) | Classic editing | `edit-video/footage` | Semi-automatic | 🔜 |
-| Long-form clips | Classic editing | `edit-video/clip-long` | Semi-automatic | 🔜 |
-| Software tutorial screencast | Hybrid | talking-head + overlays | Semi-automatic | 🔜 |
+| Live footage (vlog, shop, unbox, commerce) | Classic editing | `edit-video/footage` | Semi-automatic (workflow To be tested on Mac) | ✅ |
+| Long-form clips | Classic editing | `edit-video/clip-long` | Semi-automatic (workflow To be tested on Mac) | ✅ |
+| Software tutorial screencast | Hybrid | `edit-video/screencast` | Semi-automatic (compositing To be tested on Mac) | ✅ |
 
-Minimal `video-router`: routes only explainer vs talking-head; for 🔜 types it replies "not supported yet" (the skill replies in Chinese).
+`video-router`: routes all 10 styles; rejects digital avatars; replies "not supported yet" for out-of-table types (the skill replies in Chinese).
 
 <a id="en-broll"></a>
 ### Six talking-head subtypes by B-roll source
@@ -427,26 +443,38 @@ Minimal `video-router`: routes only explainer vs talking-head; for 🔜 types it
 
 | Skill | Path | Use cases | What it does |
 | --- | --- | --- | --- |
-| **Explainer · 知识科普** (priority) | `code-video/explainer/` | Turn a topic, outline, or lesson deck into a short knowledge video with no on-camera host | Storyboard → style card → HyperFrames → captions → frame QA |
-| **Talking-head · AI/科技口播** | `edit-video/talking-head/` | You already have talking-head or tool-demo footage and need an AI / tech / tools rough cut with overlays | Transcript → filler cleanup → B-roll marks → overlays → export + CapCut checklist |
-| **Video-router · 视频入口** | `video-router/` | You want a video but have not chosen explainer vs talking-head yet; start with routing and a toolchain check | Routes explainer / talking-head only; otherwise replies "not supported yet" (the skill replies in Chinese) |
+| **Video-router · 视频入口** | `video-router/` | Pick a style and check the toolchain | Routes all 10 styles; rejects digital avatars |
+| **Explainer · 知识科普** | `code-video/explainer/` | Topic / outline / lesson → no on-camera host | HyperFrames template + style card + captions |
+| **Data-story · 数据动画** | `code-video/data-story/` | CSV / metrics → data motion | Short template; on-screen sample-data label |
+| **Promo · 宣传片/金句** | `code-video/promo/` | Product promo or kinetic / quote cards | Two templates; real UI or 示例 placeholder |
+| **Animation · 动画短片** | `code-video/animation/` | Short animation / MV-style beat piece | Shapes + type on a beat grid; silent OK |
+| **Talking-head · AI/科技口播** | `edit-video/talking-head/` | AI/tech/tools talking-head rough cut | Transcript → fillers → B-roll → overlays → CapCut list |
+| **Footage · 实拍粗剪** | `edit-video/footage/` | Vlog / shop / unbox / commerce footage | Shot log, ffmpeg cut list, captions, CapCut list |
+| **Clip-long · 长视频切片** | `edit-video/clip-long/` | Long video → short clips | Transcript → highlights → ffmpeg → captions |
+| **Screencast · 软件教程** | `edit-video/screencast/` | Software tutorial screencast | Hybrid: screen main line + overlays |
 
-Shared modules: `shared/overlays/`, `shared/styles/` (SCHEMA + 2 cards), `shared/subtitle-tts/` (captions ready; TTS hooks reserved).
+Shared modules: `shared/overlays/`, `shared/styles/`, `shared/subtitle-tts/` (TTS still To be tested on Mac).
 
-**Out of scope this week:** `promo` (TBD next week), `data-story`, digital avatars, Windows.
+**Out of scope:** digital avatars, Windows.
 
 <a id="en-install"></a>
 ### Install (Mac)
 
-Packages under `dist/` are generated by `scripts/build_dist.py` from an explicit manifest, each with `LICENSE` + `NOTICE`. **Do not hand-edit `dist/`**; change sources, re-run the build script, then commit. **Install all three together** (`video-router` alone only routes).
+Packages under `dist/` are generated by `scripts/build_dist.py` from an explicit manifest, each with `LICENSE` + `NOTICE`. **Do not hand-edit `dist/`**; change sources, re-run the build script, then commit. **Install every `dist/` package together** (`video-router` alone only routes).
 
 #### How the three packages relate
 
 | Package | Role | Needs |
 | --- | --- | --- |
-| `dist/video-router/` | Routes users to explainer or talking-head; does not render frames | Not useful alone |
-| `dist/explainer/` | Knowledge / lesson → video (HyperFrames template + fonts) | Can render alone |
-| `dist/talking-head/` | AI/tech talking-head rough-cut workflow (overlays etc.; no render fonts in this release) | Workflow docs alone |
+| `dist/video-router/` | Routes all 10 styles; no rendering | Not useful alone |
+| `dist/explainer/` | Knowledge / lesson templates + fonts | Can render alone |
+| `dist/data-story/` | Data-motion template (sample-data badge) | Can render alone |
+| `dist/promo/` | Promo + kinetic-card templates | Can render alone |
+| `dist/animation/` | Animation / MV-style template | Can render alone |
+| `dist/talking-head/` | AI/tech talking-head workflow | Docs alone |
+| `dist/footage/` | Live-footage semi-auto workflow | Docs alone |
+| `dist/clip-long/` | Long → clips workflow | Docs alone |
+| `dist/screencast/` | Screencast overlays workflow | Docs alone |
 
 #### Primary path: Claude desktop app (upload zips)
 
@@ -454,9 +482,7 @@ Packages under `dist/` are generated by `scripts/build_dist.py` from an explicit
 
 ```bash
 make release
-# → release/video-router.zip
-# → release/explainer.zip
-# → release/talking-head.zip
+# → release/<skill>.zip (9 packages: router + 8 skills)
 ```
 
 2. Open the **Claude desktop app** and go to its Skills settings.
@@ -482,11 +508,13 @@ Copy the whole `dist/<name>/` folder into the tool's skills directory (do not in
 `<name>` is `explainer` / `talking-head` / `video-router`. DeepSeek Harness mainly scans one level under the skills root, so use flat `dist/<name>/`.
 
 ```bash
-# Claude Code example (project root)
+# Claude Code example (project root): copy every dist package
 mkdir -p .claude/skills
-cp -R dist/video-router .claude/skills/video-router
-cp -R dist/explainer .claude/skills/explainer
-cp -R dist/talking-head .claude/skills/talking-head
+for d in dist/*/; do
+  name="$(basename "$d")"
+  [[ -f "$d/SKILL.md" ]] || continue
+  cp -R "$d" ".claude/skills/$name"
+done
 ```
 
 #### Render after install (explainer)

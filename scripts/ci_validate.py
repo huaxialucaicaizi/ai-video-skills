@@ -19,7 +19,13 @@ _FORBIDDEN_CI = ["code" + "buddy", "work" + "buddy"]
 SKILL_DIRS = [
     ROOT / "video-router",
     ROOT / "code-video" / "explainer",
+    ROOT / "code-video" / "data-story",
+    ROOT / "code-video" / "promo",
+    ROOT / "code-video" / "animation",
     ROOT / "edit-video" / "talking-head",
+    ROOT / "edit-video" / "footage",
+    ROOT / "edit-video" / "clip-long",
+    ROOT / "edit-video" / "screencast",
 ]
 
 SKIP_PARTS = {"node_modules", ".git", "tmp-render", "qa-frames", "renders", "release"}
@@ -88,7 +94,17 @@ def validate_examples_fiction_mark() -> None:
 
 
 def validate_triggers() -> None:
-    for skill in ("video-router", "explainer", "talking-head"):
+    for skill in (
+        "video-router",
+        "explainer",
+        "data-story",
+        "promo",
+        "animation",
+        "talking-head",
+        "footage",
+        "clip-long",
+        "screencast",
+    ):
         base = ROOT / "tests" / "triggers" / skill
         for name in ("should-trigger.txt", "should-not-trigger.txt"):
             path = base / name

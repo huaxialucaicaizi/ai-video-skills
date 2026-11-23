@@ -47,7 +47,7 @@ forbidden:
 
 ## 使用规则
 
-1. explainer / overlays 套卡前先读对应 yaml，再读对应 yaml 注释与本包 `shared/styles/SCHEMA.md`。
+1. explainer / overlays 套卡前先读对应 yaml，再读对应 yaml 注释与本包风格说明。
 2. 渲染全程用项目内字体文件，不从 Google Fonts / jsDelivr 拉字体。
 3. GSAP 用 npm 本地安装，不从 CDN 加载（国内网络不稳定）。
 4. 选卡后交付时用一两句话说明为什么选这张卡。

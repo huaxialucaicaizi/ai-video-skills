@@ -37,18 +37,6 @@ MANIFESTS: dict[str, list[tuple]] = {
         ("file", ROOT / "scripts" / "doctor.sh", "doctor.sh"),
         ("license",),
     ],
-    "talking-head": [
-        ("skill", ROOT / "edit-video" / "talking-head" / "SKILL.md", "SKILL.md"),
-        ("tree", ROOT / "edit-video" / "talking-head" / "agents", "agents"),
-        ("tree", ROOT / "edit-video" / "talking-head" / "references", "references"),
-        ("tree", ROOT / "edit-video" / "talking-head" / "examples", "examples"),
-        ("tree", ROOT / "shared" / "overlays", "shared/overlays"),
-        ("tree", ROOT / "shared" / "styles", "shared/styles"),
-        ("tree", ROOT / "shared" / "subtitle-tts", "shared/subtitle-tts"),
-        ("file", ROOT / "scripts" / "doctor.sh", "doctor.sh"),
-        ("license",),
-        # no fonts / templates — talking-head does not render HyperFrames frames in v1
-    ],
     "explainer": [
         ("skill", ROOT / "code-video" / "explainer" / "SKILL.md", "SKILL.md"),
         ("tree", ROOT / "code-video" / "explainer" / "agents", "agents"),
@@ -62,7 +50,84 @@ MANIFESTS: dict[str, list[tuple]] = {
         ("file", ROOT / "scripts" / "doctor.sh", "doctor.sh"),
         ("license",),
     ],
+    "data-story": [
+        ("skill", ROOT / "code-video" / "data-story" / "SKILL.md", "SKILL.md"),
+        ("tree", ROOT / "code-video" / "data-story" / "agents", "agents"),
+        ("tree", ROOT / "code-video" / "data-story" / "references", "references"),
+        ("tree", ROOT / "code-video" / "data-story" / "examples", "examples"),
+        ("tree", ROOT / "code-video" / "data-story" / "templates", "templates"),
+        ("tree", ROOT / "shared" / "styles", "shared/styles"),
+        ("fonts_into_template", "templates/short-data-story/fonts"),
+        ("file", ROOT / "scripts" / "doctor.sh", "doctor.sh"),
+        ("license",),
+    ],
+    "promo": [
+        ("skill", ROOT / "code-video" / "promo" / "SKILL.md", "SKILL.md"),
+        ("tree", ROOT / "code-video" / "promo" / "agents", "agents"),
+        ("tree", ROOT / "code-video" / "promo" / "references", "references"),
+        ("tree", ROOT / "code-video" / "promo" / "examples", "examples"),
+        ("tree", ROOT / "code-video" / "promo" / "templates", "templates"),
+        ("tree", ROOT / "shared" / "styles", "shared/styles"),
+        ("fonts_into_template", "templates/short-promo/fonts"),
+        ("fonts_into_template", "templates/kinetic-cards/fonts"),
+        ("file", ROOT / "scripts" / "doctor.sh", "doctor.sh"),
+        ("license",),
+    ],
+    "animation": [
+        ("skill", ROOT / "code-video" / "animation" / "SKILL.md", "SKILL.md"),
+        ("tree", ROOT / "code-video" / "animation" / "agents", "agents"),
+        ("tree", ROOT / "code-video" / "animation" / "references", "references"),
+        ("tree", ROOT / "code-video" / "animation" / "examples", "examples"),
+        ("tree", ROOT / "code-video" / "animation" / "templates", "templates"),
+        ("fonts_into_template", "templates/short-animation/fonts"),
+        ("file", ROOT / "scripts" / "doctor.sh", "doctor.sh"),
+        ("license",),
+    ],
+    "talking-head": [
+        ("skill", ROOT / "edit-video" / "talking-head" / "SKILL.md", "SKILL.md"),
+        ("tree", ROOT / "edit-video" / "talking-head" / "agents", "agents"),
+        ("tree", ROOT / "edit-video" / "talking-head" / "references", "references"),
+        ("tree", ROOT / "edit-video" / "talking-head" / "examples", "examples"),
+        ("tree", ROOT / "shared" / "overlays", "shared/overlays"),
+        ("tree", ROOT / "shared" / "styles", "shared/styles"),
+        ("tree", ROOT / "shared" / "subtitle-tts", "shared/subtitle-tts"),
+        ("file", ROOT / "scripts" / "doctor.sh", "doctor.sh"),
+        ("license",),
+    ],
+    "footage": [
+        ("skill", ROOT / "edit-video" / "footage" / "SKILL.md", "SKILL.md"),
+        ("tree", ROOT / "edit-video" / "footage" / "agents", "agents"),
+        ("tree", ROOT / "edit-video" / "footage" / "references", "references"),
+        ("tree", ROOT / "edit-video" / "footage" / "examples", "examples"),
+        ("tree", ROOT / "shared" / "subtitle-tts", "shared/subtitle-tts"),
+        ("file", ROOT / "scripts" / "doctor.sh", "doctor.sh"),
+        ("license",),
+    ],
+    "clip-long": [
+        ("skill", ROOT / "edit-video" / "clip-long" / "SKILL.md", "SKILL.md"),
+        ("tree", ROOT / "edit-video" / "clip-long" / "agents", "agents"),
+        ("tree", ROOT / "edit-video" / "clip-long" / "references", "references"),
+        ("tree", ROOT / "edit-video" / "clip-long" / "examples", "examples"),
+        ("tree", ROOT / "shared" / "subtitle-tts", "shared/subtitle-tts"),
+        ("file", ROOT / "scripts" / "doctor.sh", "doctor.sh"),
+        ("license",),
+    ],
+    "screencast": [
+        ("skill", ROOT / "edit-video" / "screencast" / "SKILL.md", "SKILL.md"),
+        ("tree", ROOT / "edit-video" / "screencast" / "agents", "agents"),
+        ("tree", ROOT / "edit-video" / "screencast" / "references", "references"),
+        ("tree", ROOT / "edit-video" / "screencast" / "examples", "examples"),
+        ("tree", ROOT / "edit-video" / "screencast" / "overlays", "overlays"),
+        ("tree", ROOT / "shared" / "overlays", "shared/overlays"),
+        ("tree", ROOT / "shared" / "styles", "shared/styles"),
+        ("tree", ROOT / "shared" / "subtitle-tts", "shared/subtitle-tts"),
+        ("file", ROOT / "scripts" / "doctor.sh", "doctor.sh"),
+        ("license",),
+    ],
 }
+
+PACKAGE_ORDER = list(MANIFESTS.keys())
+NO_FONT_PACKAGES = {"video-router", "talking-head", "footage", "clip-long", "screencast"}
 
 
 def die(msg: str) -> None:
@@ -194,12 +259,26 @@ def _rewrite_package_text(text: str, *, package: str) -> str:
             "`code-video/explainer/references/style-usage.md`",
             "`references/style-usage.md`",
         )
-    elif package == "talking-head":
+    elif package in {"data-story", "promo", "animation"}:
+        text = text.replace("`shared/fonts/`", "`./fonts/`")
+        text = text.replace("`shared/fonts`", "`./fonts`")
+        text = text.replace(
+            "`code-video/explainer/references/style-usage.md`",
+            "`shared/styles/SCHEMA.md`",
+        )
         text = text.replace(
             "再读 `code-video/explainer/references/style-usage.md`",
-            "再读对应 yaml 注释与本包 `shared/styles/SCHEMA.md`",
+            "再读本包 `shared/styles/SCHEMA.md`",
         )
-        text = text.replace("`code-video/explainer/references/style-usage.md`", "`shared/styles/SCHEMA.md`")
+    elif package in {"talking-head", "footage", "clip-long", "screencast"}:
+        text = text.replace(
+            "再读 `code-video/explainer/references/style-usage.md`",
+            "再读对应 yaml 注释与本包风格说明",
+        )
+        text = text.replace(
+            "`code-video/explainer/references/style-usage.md`",
+            "`shared/styles/SCHEMA.md`",
+        )
     return text
 
 
@@ -259,15 +338,15 @@ def build_package(out_root: Path, name: str) -> Path:
         _apply_item(pkg, item)
     _rewrite_copied_text_files(pkg)
     # Guards
-    if name == "explainer":
-        html = (pkg / "templates" / "short-explainer" / "index.html").read_text(encoding="utf-8")
-        if re.search(r"url\([\"']?\.\./", html):
-            die("dist/explainer template still has parent-traversal font URLs")
-        ofl = pkg / "templates" / "short-explainer" / "fonts" / "OFL.txt"
-        if not ofl.exists():
-            die("explainer template fonts missing OFL.txt")
+    for html in pkg.glob("templates/*/index.html"):
+        body = html.read_text(encoding="utf-8")
+        if re.search(r"url\([\"']?\.\./", body):
+            die(f"{name} template still has parent-traversal font URLs: {html.relative_to(pkg)}")
+        fonts_dir = html.parent / "fonts"
+        if fonts_dir.is_dir() and not (fonts_dir / "OFL.txt").exists():
+            die(f"{name} template fonts missing OFL.txt: {fonts_dir.relative_to(pkg)}")
     # video-router / talking-head must not ship fonts
-    if name in {"video-router", "talking-head"}:
+    if name in NO_FONT_PACKAGES:
         for p in pkg.rglob("*"):
             if p.suffix.lower() in {".woff", ".woff2", ".otf", ".ttf"}:
                 die(f"{name} must not include font file: {p.relative_to(pkg)}")
@@ -286,7 +365,7 @@ def package_size_bytes(pkg: Path) -> int:
 
 
 def print_sizes(out_root: Path) -> None:
-    for name in ("video-router", "talking-head", "explainer"):
+    for name in PACKAGE_ORDER:
         pkg = out_root / name
         if not pkg.exists():
             die(f"missing {pkg}")
@@ -298,23 +377,28 @@ def build_all(out_root: Path) -> None:
     sync_template_fonts()
     ensure_template_local_font_urls()
     out_root.mkdir(parents=True, exist_ok=True)
-    for name in ("video-router", "talking-head", "explainer"):
+    for name in PACKAGE_ORDER:
         p = out_root / name
         if p.exists():
             shutil.rmtree(p)
-    for name in ("video-router", "talking-head", "explainer"):
+    for name in PACKAGE_ORDER:
         build_package(out_root, name)
-    (out_root / "README.md").write_text(
-        "# dist/\n\n"
-        "由 `scripts/build_dist.py` 按显式清单生成的自包含 skill 安装包。\n\n"
-        "- `video-router/`：只路由，不渲染；需与另两个包一起安装才能用起来\n"
-        "- `talking-head/`：口播流程 + overlays/styles/subtitle-tts（无字体/模板）\n"
-        "- `explainer/`：科普渲染模板 + overlays/styles/subtitle-tts + 模板内字体（OFL）\n\n"
-        "每个包都含 `LICENSE` 与 `NOTICE`。不要手改；改源码后重新运行构建脚本。\n\n"
-        "Generated by `scripts/build_dist.py` from explicit manifests. "
-        "Do not hand-edit; re-run after source changes.\n",
-        encoding="utf-8",
-    )
+    lines = [
+        "# dist/",
+        "",
+        "由 `scripts/build_dist.py` 按显式清单生成的自包含 skill 安装包（覆盖 10 种风格对应 skill）。",
+        "",
+    ]
+    for name in PACKAGE_ORDER:
+        lines.append(f"- `{name}/`")
+    lines += [
+        "",
+        "每个包都含 `LICENSE` 与 `NOTICE`。不要手改；改源码后重新运行构建脚本。",
+        "",
+        "Generated by `scripts/build_dist.py` from explicit manifests. Do not hand-edit.",
+        "",
+    ]
+    (out_root / "README.md").write_text("\n".join(lines), encoding="utf-8")
     print_sizes(out_root)
 
 
@@ -347,7 +431,7 @@ def check_mode() -> None:
         if not DIST.exists():
             die("committed dist/ missing; run scripts/build_dist.py and commit")
         problems: list[str] = []
-        for name in ("explainer", "talking-head", "video-router"):
+        for name in PACKAGE_ORDER:
             problems.extend(_dir_diff(DIST / name, out / name))
         if (DIST / "README.md").exists() or (out / "README.md").exists():
             if not filecmp.cmp(DIST / "README.md", out / "README.md", shallow=False):

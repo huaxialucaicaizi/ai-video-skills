@@ -1,0 +1,4 @@
+interface:
+  display_name: Footage
+  short_description: 探店/Vlog/开箱/带货实拍：镜头记录、ffmpeg 粗剪列表、字幕与剪映清单。
+  default_prompt: 根据我的实拍素材做镜头记录和 ffmpeg 粗剪列表，并给剪映精修清单。

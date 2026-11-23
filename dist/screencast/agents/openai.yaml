@@ -1,0 +1,4 @@
+interface:
+  display_name: Screencast
+  short_description: 软件教程录屏：主线录屏 + 步骤/放大/键盘提示 overlays。
+  default_prompt: 根据我的软件录屏做步骤标注和键盘提示叠层方案。
