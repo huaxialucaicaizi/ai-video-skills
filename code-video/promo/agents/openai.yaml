@@ -1,0 +1,4 @@
+interface:
+  display_name: Promo
+  short_description: 产品宣传片与文字快闪/金句卡（无真实品牌；界面用真实截图或示例占位）。
+  default_prompt: 做一条竖屏产品宣传短片，界面用示例占位，只出字幕。
