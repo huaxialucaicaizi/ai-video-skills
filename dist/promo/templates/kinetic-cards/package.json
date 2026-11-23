@@ -1,0 +1,16 @@
+{
+  "name": "kinetic-cards",
+  "private": true,
+  "version": "0.1.0",
+  "description": "HyperFrames template for ai-video-skills (kinetic-cards).",
+  "scripts": {
+    "render": "hyperframes render --output ./renders/kinetic-cards.mp4",
+    "preview": "hyperframes preview",
+    "doctor": "hyperframes doctor"
+  },
+  "engines": { "node": ">=22" },
+  "dependencies": {
+    "gsap": "^3.14.2",
+    "hyperframes": "^0.9.65"
+  }
+}

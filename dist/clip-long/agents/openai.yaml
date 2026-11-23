@@ -1,0 +1,4 @@
+interface:
+  display_name: Clip Long
+  short_description: 长视频切片：转写、高光时间码、ffmpeg 剪切、竖屏再构图与字幕。
+  default_prompt: 把这段长视频标出高光时间码，并给出 ffmpeg 切片和字幕草稿。

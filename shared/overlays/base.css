@@ -1,0 +1,89 @@
+/* Overlay base — pair with a style card palette via CSS variables */
+:root {
+  --ov-bg: #0f1c24;
+  --ov-text: #f5f7fa;
+  --ov-accent: #2f6fed;
+  --ov-secondary: #e8eef2;
+  --ov-safe-x: 80px;
+  --ov-safe-y: 160px;
+  --ov-radius: 0px;
+  --ov-font: "Noto Sans SC", "Source Han Sans SC", sans-serif;
+}
+
+.overlay-concept .card-inner,
+.overlay-steps .card-inner,
+.overlay-data .card-inner,
+.overlay-screenshot .card-inner {
+  position: absolute;
+  left: var(--ov-safe-x);
+  right: var(--ov-safe-x);
+  top: var(--ov-safe-y);
+  bottom: calc(var(--ov-safe-y) + 120px);
+  color: var(--ov-text);
+  font-family: var(--ov-font);
+  box-sizing: border-box;
+}
+
+.overlay-concept .title,
+.overlay-steps .title,
+.overlay-screenshot .title {
+  font-size: 56px;
+  line-height: 1.2;
+  margin: 0 0 24px;
+  font-weight: 700;
+}
+
+.overlay-concept .body,
+.overlay-concept .eyebrow,
+.overlay-steps .steps,
+.overlay-data .label,
+.overlay-data .note,
+.overlay-screenshot figcaption,
+.overlay-screenshot .warn {
+  font-size: 32px;
+  line-height: 1.4;
+}
+
+.overlay-data .number {
+  font-size: 120px;
+  line-height: 1;
+  color: var(--ov-accent);
+  font-weight: 700;
+  margin: 16px 0;
+}
+
+.overlay-steps .steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.overlay-steps .steps li {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 28px;
+}
+
+.overlay-steps .n {
+  display: inline-flex;
+  width: 56px;
+  height: 56px;
+  align-items: center;
+  justify-content: center;
+  background: var(--ov-accent);
+  color: var(--ov-text);
+  border-radius: var(--ov-radius);
+  font-size: 32px; /* style-card floor: label/body >= 32px on 1080 portrait */
+  font-weight: 700;
+  flex: none;
+}
+
+.overlay-screenshot img {
+  max-width: 100%;
+  max-height: 980px;
+  object-fit: contain;
+  border: 2px solid var(--ov-secondary);
+  border-radius: var(--ov-radius);
+  background: #000;
+}

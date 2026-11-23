@@ -1,0 +1,4 @@
+interface:
+  display_name: Video Router
+  short_description: 按 10 种办公视频风格分流，并检查 Mac 剪辑环境（含 ffmpeg）。
+  default_prompt: 帮我判断这条视频需求该走哪种风格 skill，并检查环境。

@@ -1,0 +1,4 @@
+interface:
+  display_name: Animation
+  short_description: 动画短片/MV 风：形状与文字节拍动画（无版权音乐）。
+  default_prompt: 做一条竖屏形状节拍动画短片，不要版权音乐，只出字幕或静音。
