@@ -22,3 +22,7 @@ qa-frames/
 
 .hyperframes/
 **/renders/
+
+# local zip packs for Claude desktop upload (make release)
+release/
+*.zip

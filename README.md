@@ -7,10 +7,6 @@
 **面向 10 种办公视频风格的 AI 视频 skill 仓库：用「代码生成」和「古法剪辑」两条 AI 剪辑路径，实现全自动或半自动的视频剪辑。**<br>
 AI video skills for 10 office video styles, built on two AI editing paths, code-generated and traditional editing, for fully or semi-automated video editing.
 
-[![CI](https://github.com/huaxialucaicaizi/ai-video-skills/actions/workflows/ci.yml/badge.svg)](https://github.com/huaxialucaicaizi/ai-video-skills/actions/workflows/ci.yml)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/huaxialucaicaizi/ai-video-skills?style=social)](https://github.com/huaxialucaicaizi/ai-video-skills)
-
 [中文](#zh) | [English](#en)
 
 </div>
@@ -133,11 +129,11 @@ ai-video-skills/
 <a id="zh-skills"></a>
 ### 本版已交付 skill
 
-| Skill | 路径 | 做什么 |
-| --- | --- | --- |
-| **explainer**（优先） | `code-video/explainer/` | vibe 知识科普：分镜 → 风格卡 → HyperFrames → 字幕 → 逐帧自检 |
-| **talking-head** | `edit-video/talking-head/` | AI/科技口播：转写 → 去口癖 → B-roll 标记 → overlays → 导出 + 剪映清单 |
-| **video-router** | `video-router/` | 最简入口：只分科普 / 口播；其他「暂不支持」 |
+| Skill | 路径 | 使用场景 | 做什么 |
+| --- | --- | --- | --- |
+| **Explainer · 知识科普**（优先） | `code-video/explainer/` | 要把主题 / 大纲 / 课件做成无真人出镜的知识科普短视频 | 分镜 → 风格卡 → HyperFrames → 字幕 → 逐帧自检 |
+| **Talking-head · AI/科技口播** | `edit-video/talking-head/` | 已有真人口播或讲解录屏，要做 AI / 科技 / 工具类粗剪与叠层 | 转写 → 去口癖 → B-roll 标记 → overlays → 导出 + 剪映清单 |
+| **Video-router · 视频入口** | `video-router/` | 还没想清走科普还是口播，先分流并检查剪辑环境 | 只分科普 / 口播；其他「暂不支持」 |
 
 共享模块：`shared/overlays/`、`shared/styles/`（SCHEMA + 2 张卡）、`shared/subtitle-tts/`（字幕可用；配音接口预留）。
 
@@ -146,7 +142,7 @@ ai-video-skills/
 <a id="zh-install"></a>
 ### 安装（Mac）
 
-**请复制 `dist/<name>/` 整夹**到对应工具的 skills 目录（不要只贴 `SKILL.md`，也不要直接拷嵌套的源码目录）。`dist/` 由 `scripts/build_dist.py` 按显式清单生成并带齐依赖；每个包含 `LICENSE` 与 `NOTICE`；**不要手改 `dist/`**，改源码后重新运行构建脚本再提交。
+`dist/` 由 `scripts/build_dist.py` 按显式清单生成并带齐依赖；每个包含 `LICENSE` 与 `NOTICE`；**不要手改 `dist/`**，改源码后重新运行构建脚本再提交。**推荐三个包一起装**（router 只分流，单独装用不起来）。
 
 #### 三个包的关系
 
@@ -156,38 +152,50 @@ ai-video-skills/
 | `dist/explainer/` | 知识科普 / 课件转视频（含 HyperFrames 模板与字体） | 可独立渲染 |
 | `dist/talking-head/` | AI/科技口播粗剪流程（overlays 等；本版不带渲染字体） | 可独立跑流程文档 |
 
-**推荐三个一起装。** 只装 `video-router` 时，路由到 `explainer` / `talking-head` 后若目标包未安装，router 应提示用户去装对应 `dist/` 包（见该 SKILL）。
+#### 主路径：Claude 桌面版（上传 zip）
 
-#### 复制到哪里
+1. 生成三个 zip（或手动把 `dist/` 下三个文件夹分别打成 zip；不要只贴 `SKILL.md`）：
+
+```bash
+make release
+# → release/video-router.zip
+# → release/explainer.zip
+# → release/talking-head.zip
+```
+
+2. 打开 **Claude 桌面版**，进入 Skills（技能）相关设置。
+3. 分别上传上述三个 zip，并启用它们。
+4. 菜单文案以你本机 Claude 桌面版为准（不同版本可能略有差异）；若找不到上传入口，改用下方「次路径」或查阅 Claude 当前帮助文档。
+
+上传后可用这句话测 **Explainer** 是否触发（选自 `tests/triggers/explainer/should-trigger.txt`）：
+
+> 做一条 vibe 知识科普短视频
+
+（各客户端触发结果仍标「待 Mac 实测」。）
+
+#### 次路径：Claude Code / 其他工具（复制文件夹）
+
+把 `dist/<name>/` **整夹**复制到对应 skills 目录（不要直接拷嵌套源码目录）：
 
 | 工具 | 目标目录 |
 | --- | --- |
 | Claude Code | 项目级 `.claude/skills/<name>/`，或用户级 `~/.claude/skills/<name>/` |
 | Codex | 项目级 `.agents/skills/<name>/`，或用户级 `~/.agents/skills/<name>/` |
-| WorkBuddy | 项目级 `.codebuddy/skills/<name>/`（用户级精确路径待核实） |
 | DeepSeek Harness | 项目级 `.dsh/skills/<name>/` 或 `.agents/skills/<name>/`，或用户级 `~/.dsh/skills/<name>/` |
 
-`<name>` 为 `explainer` / `talking-head` / `video-router`。DeepSeek Harness 主要扫描技能根下一层目录，因此必须用扁平的 `dist/<name>/`，不能把整个多层仓库直接丢进去。
-
-#### Claude Code 安装与触发自测
+`<name>` 为 `explainer` / `talking-head` / `video-router`。DeepSeek Harness 主要扫描技能根下一层目录，因此必须用扁平的 `dist/<name>/`。
 
 ```bash
-# 在项目根
+# Claude Code 示例（项目根）
 mkdir -p .claude/skills
 cp -R dist/video-router .claude/skills/video-router
 cp -R dist/explainer .claude/skills/explainer
 cp -R dist/talking-head .claude/skills/talking-head
 ```
 
-然后在 Claude Code 对话里用下面这句话测 **explainer** 是否触发（选自 `tests/triggers/explainer/should-trigger.txt`）：
+#### 装好后渲染示例（explainer）
 
-> 做一条 vibe 知识科普短视频
-
-（完整四工具触发结果仍标「待 Mac 实测」。）
-
-#### 装好后渲染示例
-
-在**已安装的** skill 目录内（例如项目 `.claude/skills/explainer/`）：
+在**已安装的** skill 目录内（例如 Claude Code 项目 `.claude/skills/explainer/`，或从 zip 解压后的 explainer 包内）：
 
 ```bash
 ./doctor.sh
@@ -212,7 +220,7 @@ Node 版本（分工具报告，不要合成一条）：
 - HyperFrames / 常见 Claude Code npm 路径：Node.js **22+**
 - DeepSeek Harness：Node.js **>=24.9.0**（以 npm 包 `@deepseek-ai/dsh` 的 `engines` 为准；2026-11-18 查询版本 `0.2.2-rc.1`）
 
-各工具触发实测：**待 Mac 实测**（此前测试机未装 Claude Code / Codex / WorkBuddy / DeepSeek Harness）。
+各客户端触发实测：**待 Mac 实测**（此前测试机未装 Claude 桌面版 / Claude Code / Codex / DeepSeek Harness）。
 
 <a id="zh-mac"></a>
 ### Mac 实测状态
@@ -224,14 +232,13 @@ Node 版本（分工具报告，不要合成一条）：
 | `scripts/doctor.sh` | ✅ 已实测 — [记录](tests/mac/2026-11-18-imac.md) |
 | `short-explainer` 渲染（9s） | ✅ 已实测 — [记录](tests/mac/2026-11-18-imac.md) |
 | 截帧 1.5s / 4.5s / 7.5s 自查 | ✅ 已实测 — [记录](tests/mac/2026-11-18-imac.md) |
-| 四工具触发 | 待 Mac 实测 |
+| Claude 桌面版 / Claude Code / Codex / DeepSeek Harness 触发 | 待 Mac 实测 |
 | Qwen3-TTS vs CosyVoice | 待 Mac 实测 |
 | 转写引擎与去口癖 | 待 Mac 实测 |
 | talking-head 叠层导出 | 待 Mac 实测 |
 | 剪映精修步骤与版本 | 待 Mac 实测 |
 | 完整 30s explainer | 待 Mac 实测（仓库暂无 30s 模板） |
 | 前后对比 | 待 Mac 实测 |
-| WorkBuddy 用户级精确路径 | 待 Mac 实测 |
 
 观察（不改代码）：竖屏里正文/卡片偏小、内容偏窄，建议 30s 完整版再放大。见实测记录。
 
@@ -286,7 +293,7 @@ python3 -m pip install pyyaml
 python3 scripts/ci_validate.py
 ```
 
-CI：校验各 `SKILL.md` frontmatter、`agents/openai.yaml`、examples「虚构示例」、触发测试 10+10、禁用词（对 `.codebuddy/` 路径白名单）、`build_dist.py --check`、三包脱离仓库路径检查、`dist/explainer` 严格 lint（0 error）后再 render 冒烟、macOS 上跑仓库与各包内 `doctor.sh`。
+CI：校验各 `SKILL.md` frontmatter、`agents/openai.yaml`、examples「虚构示例」、触发测试 10+10、禁用词扫描、`build_dist.py --check`、三包脱离仓库路径检查、`dist/explainer` 严格 lint（0 error）后再 render 冒烟、macOS 上跑仓库与各包内 `doctor.sh`。
 
 <a id="zh-author"></a>
 ### 作者
@@ -418,11 +425,11 @@ Minimal `video-router`: routes only explainer vs talking-head; for 🔜 types it
 <a id="en-skills"></a>
 ### Skills in this release
 
-| Skill | Path | What it does |
-| --- | --- | --- |
-| **explainer** (priority) | `code-video/explainer/` | vibe knowledge explainer: storyboard → style card → HyperFrames → captions → frame QA |
-| **talking-head** | `edit-video/talking-head/` | AI/tech talking-head: transcript → filler cleanup → B-roll marks → overlays → export + CapCut checklist |
-| **video-router** | `video-router/` | Minimal entry: explainer / talking-head only; otherwise replies "not supported yet" (the skill replies in Chinese) |
+| Skill | Path | Use cases | What it does |
+| --- | --- | --- | --- |
+| **Explainer · 知识科普** (priority) | `code-video/explainer/` | Turn a topic, outline, or lesson deck into a short knowledge video with no on-camera host | Storyboard → style card → HyperFrames → captions → frame QA |
+| **Talking-head · AI/科技口播** | `edit-video/talking-head/` | You already have talking-head or tool-demo footage and need an AI / tech / tools rough cut with overlays | Transcript → filler cleanup → B-roll marks → overlays → export + CapCut checklist |
+| **Video-router · 视频入口** | `video-router/` | You want a video but have not chosen explainer vs talking-head yet; start with routing and a toolchain check | Routes explainer / talking-head only; otherwise replies "not supported yet" (the skill replies in Chinese) |
 
 Shared modules: `shared/overlays/`, `shared/styles/` (SCHEMA + 2 cards), `shared/subtitle-tts/` (captions ready; TTS hooks reserved).
 
@@ -431,7 +438,7 @@ Shared modules: `shared/overlays/`, `shared/styles/` (SCHEMA + 2 cards), `shared
 <a id="en-install"></a>
 ### Install (Mac)
 
-**Copy the whole `dist/<name>/` folder** into your agent skills directory (do not paste-only `SKILL.md`, and do not install the nested source folders). Packages under `dist/` are generated by `scripts/build_dist.py` from an explicit manifest, each with `LICENSE` + `NOTICE`. **Do not hand-edit `dist/`**; change sources, re-run the build script, then commit.
+Packages under `dist/` are generated by `scripts/build_dist.py` from an explicit manifest, each with `LICENSE` + `NOTICE`. **Do not hand-edit `dist/`**; change sources, re-run the build script, then commit. **Install all three together** (`video-router` alone only routes).
 
 #### How the three packages relate
 
@@ -441,38 +448,50 @@ Shared modules: `shared/overlays/`, `shared/styles/` (SCHEMA + 2 cards), `shared
 | `dist/explainer/` | Knowledge / lesson → video (HyperFrames template + fonts) | Can render alone |
 | `dist/talking-head/` | AI/tech talking-head rough-cut workflow (overlays etc.; no render fonts in this release) | Workflow docs alone |
 
-**Install all three together.** `video-router` alone only routes; if the target skill is missing, it must tell the user to install `dist/explainer/` or `dist/talking-head/` (see that SKILL + this [Install (Mac)](#en-install) section).
+#### Primary path: Claude desktop app (upload zips)
 
-#### Where to copy
+1. Build three zips (or zip each folder under `dist/` yourself; do not paste-only `SKILL.md`):
+
+```bash
+make release
+# → release/video-router.zip
+# → release/explainer.zip
+# → release/talking-head.zip
+```
+
+2. Open the **Claude desktop app** and go to its Skills settings.
+3. Upload each zip and enable the skill.
+4. Exact menu labels vary by Claude desktop version; if you cannot find the upload entry, use the secondary path below or Claude's current help docs.
+
+Type this prompt (Chinese, meaning "make a short vibe knowledge-explainer video"):
+
+> 做一条 vibe 知识科普短视频
+
+(Client trigger results still: To be tested on Mac.)
+
+#### Secondary path: Claude Code / other tools (copy folders)
+
+Copy the whole `dist/<name>/` folder into the tool's skills directory (do not install nested source folders from the monorepo):
 
 | Tool | Destination |
 | --- | --- |
 | Claude Code | Project `.claude/skills/<name>/`, or user `~/.claude/skills/<name>/` |
 | Codex | Project `.agents/skills/<name>/`, or user `~/.agents/skills/<name>/` |
-| WorkBuddy | Project `.codebuddy/skills/<name>/` (exact user-level path: To be verified) |
 | DeepSeek Harness | Project `.dsh/skills/<name>/` or `.agents/skills/<name>/`, or user `~/.dsh/skills/<name>/` |
 
-`<name>` is `explainer` / `talking-head` / `video-router`. DeepSeek Harness mainly scans one level under the skills root, so use flat `dist/<name>/`; do not drop the whole nested monorepo in.
-
-#### Claude Code install + trigger smoke
+`<name>` is `explainer` / `talking-head` / `video-router`. DeepSeek Harness mainly scans one level under the skills root, so use flat `dist/<name>/`.
 
 ```bash
-# from project root
+# Claude Code example (project root)
 mkdir -p .claude/skills
 cp -R dist/video-router .claude/skills/video-router
 cp -R dist/explainer .claude/skills/explainer
 cp -R dist/talking-head .claude/skills/talking-head
 ```
 
-Type this prompt (Chinese, meaning "make a short vibe knowledge-explainer video"):
-
-> 做一条 vibe 知识科普短视频
-
-(Full four-agent trigger matrix still: To be tested on Mac.)
-
 #### Render after install (explainer)
 
-Inside the **installed** skill folder (e.g. project `.claude/skills/explainer/`):
+Inside the **installed** skill folder (e.g. Claude Code project `.claude/skills/explainer/`, or the unpacked explainer package from a zip):
 
 ```bash
 ./doctor.sh
@@ -497,7 +516,7 @@ Node versions (report per tool; do not merge into one line):
 - HyperFrames / common Claude Code npm path: Node.js **22+**
 - DeepSeek Harness: Node.js **>=24.9.0** (from npm package `@deepseek-ai/dsh` `engines`; queried 2026-11-18 as `0.2.2-rc.1`)
 
-Per-agent trigger tests: **To be tested on Mac** (Claude Code / Codex / WorkBuddy / DeepSeek Harness were not installed on the prior test machine).
+Per-client trigger tests: **To be tested on Mac** (Claude desktop / Claude Code / Codex / DeepSeek Harness were not installed on the prior test machine).
 
 <a id="en-mac"></a>
 ### Mac verification status
@@ -509,14 +528,13 @@ Log: [`tests/mac/2026-11-18-imac.md`](tests/mac/2026-11-18-imac.md) (iMac · App
 | `scripts/doctor.sh` | ✅ verified — [log](tests/mac/2026-11-18-imac.md) |
 | `short-explainer` render (9s) | ✅ verified — [log](tests/mac/2026-11-18-imac.md) |
 | Frame grabs at 1.5s / 4.5s / 7.5s | ✅ verified — [log](tests/mac/2026-11-18-imac.md) |
-| Four-agent triggers | To be tested on Mac |
+| Claude desktop / Claude Code / Codex / DeepSeek Harness triggers | To be tested on Mac |
 | Qwen3-TTS vs CosyVoice | To be tested on Mac |
 | Transcription + filler cleanup | To be tested on Mac |
 | talking-head overlay export | To be tested on Mac |
 | CapCut polish steps + version | To be tested on Mac |
 | Full 30s explainer | To be tested on Mac (no 30s template in repo yet) |
 | Before/after comparison | To be tested on Mac |
-| WorkBuddy exact user-level path | To be tested on Mac |
 
 Observation (no code change): body/card text looks small on portrait, content is narrow; enlarge for a full 30s cut. See the Mac log.
 
@@ -571,7 +589,7 @@ python3 -m pip install pyyaml
 python3 scripts/ci_validate.py
 ```
 
-CI validates frontmatter, `agents/openai.yaml`, the "fictional example" mark, 10+10 triggers, banned-token scan (`.codebuddy/` path whitelisted), `build_dist.py --check`, isolated path checks for all three packages, strict `dist/explainer` lint (0 errors) then render smoke, and `doctor.sh` for the repo plus each package on macOS.
+CI validates frontmatter, `agents/openai.yaml`, the "fictional example" mark, 10+10 triggers, banned-token scan, `build_dist.py --check`, isolated path checks for all three packages, strict `dist/explainer` lint (0 errors) then render smoke, and `doctor.sh` for the repo plus each package on macOS.
 
 <a id="en-author"></a>
 ### Author

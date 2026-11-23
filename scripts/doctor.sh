@@ -9,10 +9,6 @@ OS="$(uname -s)"
 echo "== ai-video-skills doctor =="
 echo "OS: ${OS} ($(uname -m))"
 
-if [[ "${OS}" != "Darwin" ]]; then
-  echo "WARN: 第一版仅支持 Mac。当前不是 Darwin；结果仅供参考，正式验收以 Mac 为准（待 Mac 实测）。"
-fi
-
 pass=0
 fail=0
 warn=0
@@ -20,6 +16,10 @@ warn=0
 ok() { echo "OK   $1"; pass=$((pass + 1)); }
 bad() { echo "FAIL $1"; fail=$((fail + 1)); }
 note() { echo "WARN $1"; warn=$((warn + 1)); }
+
+if [[ "${OS}" != "Darwin" ]]; then
+  note "第一版仅支持 Mac。当前不是 Darwin；结果仅供参考，正式验收以 Mac 为准（待 Mac 实测）。"
+fi
 
 # --- Node.js: report per-tool requirements separately ---
 if command -v node >/dev/null 2>&1; then
