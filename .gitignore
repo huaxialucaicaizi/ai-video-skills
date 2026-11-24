@@ -26,3 +26,6 @@ qa-frames/
 # local zip packs for Claude desktop upload (make release)
 release/
 *.zip
+
+# showcase: kit/ is copied into each sample dir at render time (HyperFrames forbids ../)
+showcase/*/kit/
