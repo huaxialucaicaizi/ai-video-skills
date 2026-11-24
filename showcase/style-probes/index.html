@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<title>科普画风探针 · 同一内容 5 种画风</title>
+<script src="./kit/gsap.min.js"></script>
+<style>
+  @font-face { font-family: "Noto Sans SC"; src: url("./kit/fonts/NotoSansSC-Regular.woff") format("woff"); font-weight: 400; font-display: block; }
+  @font-face { font-family: "Noto Sans SC"; src: url("./kit/fonts/NotoSansSC-Bold.woff") format("woff"); font-weight: 700; font-display: block; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+  #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Noto Sans SC", sans-serif; font-weight: 700; }
+  .scene { position: absolute; inset: 0; overflow: hidden; }
+  .abs { position: absolute; }
+  .ctr { position: absolute; left: 0; right: 0; text-align: center; }
+
+  /* ---- A 扁平插画 ---- */
+  #flat { background: #fcebd5; color: #2b3a67; }
+  #flat .lab { position: absolute; width: 300px; transform: translateX(-50%); text-align: center; }
+  #flat .lab b { display: block; font-size: 60px; }
+  #flat .lab i { font-style: normal; display: block; font-size: 40px; font-weight: 400; color: #5a6690; }
+
+  /* ---- B 高端极简 ---- */
+  #mini { background: #0c0c0d; color: #f2f0ec; }
+  #mini .eb { font-size: 32px; font-weight: 400; letter-spacing: 0.32em; color: #8d8a84; }
+  #mini .row { position: absolute; left: 110px; right: 110px; display: flex; align-items: baseline; gap: 40px; border-top: 1px solid #3a3936; padding-top: 34px; }
+  #mini .row .no { font-size: 32px; font-weight: 400; color: #8d8a84; width: 70px; letter-spacing: 0.1em; }
+  #mini .row .big { font-size: 210px; line-height: 1; letter-spacing: -0.02em; }
+  #mini .row .sub { margin-left: auto; font-size: 40px; font-weight: 400; color: #b9b5ad; }
+
+  /* ---- C 像素 ---- */
+  #pix { background: #141726; }
+  #pix canvas { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; image-rendering: pixelated; }
+
+  /* ---- D 三维等距 ---- */
+  #iso { background: linear-gradient(180deg, #eef0fb 0%, #dfe3f6 100%); color: #23264a; }
+  #iso .tag { position: absolute; transform: translate(-50%, -100%); padding: 14px 26px; background: #fff; border-radius: 18px; font-size: 48px; box-shadow: 0 10px 0 rgba(35,38,74,0.12); white-space: nowrap; }
+  #iso .tag i { font-style: normal; font-weight: 400; font-size: 36px; color: #6b6f99; margin-left: 12px; }
+
+  /* ---- E 原理图解（技术） ---- */
+  #tech { background: #0e1116; color: #e6edf3; }
+  #tech .mono { font-family: "DejaVu Sans Mono", monospace; }
+  #tech .blk { position: absolute; transform: translate(-50%, -50%); border: 3px solid #3a4452; background: #151a22; padding: 26px 34px; text-align: center; border-radius: 10px; }
+  #tech .blk b { display: block; font-size: 52px; }
+  #tech .blk code { display: block; font-family: "DejaVu Sans Mono", monospace; font-size: 34px; font-weight: 400; color: #3ddcff; margin-top: 6px; }
+  #tech .blk.core { border-color: #3ddcff; }
+  #tech .pkt { position: absolute; width: 26px; height: 26px; margin: -13px 0 0 -13px; background: #3ddcff; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="5" data-width="1080" data-height="1920" data-fps="30">
+
+  <!-- A 扁平插画 -->
+  <section class="scene clip" id="flat" data-start="0" data-duration="1" data-track-index="1">
+    <svg class="abs" style="left:0;top:0" width="1080" height="1920" viewBox="0 0 1080 1920">
+      <path d="M-60 420 C160 300 360 470 560 380 C760 290 900 330 1140 260 L1140 -20 L-60 -20 Z" fill="#f9c80e" opacity="0.35"/>
+      <circle cx="930" cy="1560" r="220" fill="#43bccd" opacity="0.18"/>
+      <circle cx="120" cy="1480" r="140" fill="#ff6f59" opacity="0.16"/>
+      <!-- loop arrows -->
+      <path d="M540 640 A330 330 0 0 1 826 1165" fill="none" stroke="#2b3a67" stroke-width="22" stroke-linecap="round" opacity="0.18"/>
+      <path d="M826 1165 A330 330 0 0 1 254 1165" fill="none" stroke="#2b3a67" stroke-width="22" stroke-linecap="round" opacity="0.18"/>
+      <path d="M254 1165 A330 330 0 0 1 540 640" fill="none" stroke="#2b3a67" stroke-width="22" stroke-linecap="round" opacity="0.18"/>
+      <!-- node 1: bulb (think) -->
+      <circle cx="540" cy="640" r="105" fill="#f9c80e"/>
+      <circle cx="540" cy="625" r="44" fill="#fff"/><rect x="520" y="662" width="40" height="26" rx="6" fill="#2b3a67"/>
+      <!-- node 2: wrench (act) -->
+      <circle cx="826" cy="1165" r="105" fill="#ff6f59"/>
+      <g transform="translate(826 1165) rotate(-45)"><rect x="-12" y="-50" width="24" height="90" rx="12" fill="#fff"/><circle cx="0" cy="-52" r="30" fill="#fff"/><rect x="-10" y="-90" width="20" height="40" fill="#ff6f59"/></g>
+      <!-- node 3: eye (check) -->
+      <circle cx="254" cy="1165" r="105" fill="#43bccd"/>
+      <path d="M190 1165 Q254 1105 318 1165 Q254 1225 190 1165 Z" fill="#fff"/><circle cx="254" cy="1165" r="22" fill="#2b3a67"/>
+      <!-- robot (flat) -->
+      <g transform="translate(420 840)">
+        <rect x="114" y="0" width="12" height="40" rx="6" fill="#2b3a67"/><circle cx="120" cy="0" r="16" fill="#ff6f59"/>
+        <rect x="20" y="36" width="200" height="150" rx="40" fill="#43bccd"/>
+        <rect x="48" y="66" width="144" height="90" rx="26" fill="#2b3a67"/>
+        <circle cx="90" cy="108" r="14" fill="#fff"/><circle cx="150" cy="108" r="14" fill="#fff"/>
+        <circle cx="44" cy="150" r="12" fill="#ff6f59" opacity="0.8"/><circle cx="196" cy="150" r="12" fill="#ff6f59" opacity="0.8"/>
+        <rect x="50" y="196" width="140" height="120" rx="30" fill="#2b3a67"/>
+        <circle cx="120" cy="252" r="22" fill="#f9c80e"/>
+        <rect x="-6" y="206" width="48" height="96" rx="24" fill="#43bccd" transform="rotate(18 18 206)"/>
+        <rect x="198" y="206" width="48" height="96" rx="24" fill="#43bccd" transform="rotate(-18 222 206)"/>
+      </g>
+    </svg>
+    <div class="ctr" style="top:200px;font-size:96px">AI Agent 怎么干活</div>
+    <div class="lab" style="left:540px;top:400px"><b>想一想</b><i>拆解目标</i></div>
+    <div class="lab" style="left:826px;top:1290px"><b>动手做</b><i>调用工具</i></div>
+    <div class="lab" style="left:254px;top:1290px"><b>看结果</b><i>检查对不对</i></div>
+    <div class="ctr" style="top:1540px;font-size:50px;font-weight:400">想 → 做 → 看，直到目标完成</div>
+  </section>
+
+  <!-- B 高端极简 -->
+  <section class="scene clip" id="mini" data-start="1" data-duration="1" data-track-index="2">
+    <div class="abs eb" style="left:110px;top:250px">AI AGENT · 工作方式</div>
+    <div class="abs" style="left:110px;top:330px;font-size:84px;line-height:1.2">它不回答问题<br>它把事情做完</div>
+    <div class="row" style="top:700px"><span class="no">01</span><span class="big">想</span><span class="sub">拆解目标</span></div>
+    <div class="row" style="top:1000px"><span class="no">02</span><span class="big">做</span><span class="sub">调用工具</span></div>
+    <div class="row" style="top:1300px"><span class="no">03</span><span class="big">看</span><span class="sub">检查结果</span></div>
+    <div class="abs" style="left:110px;top:1600px;width:14px;height:14px;border-radius:50%;background:#ff5a1f"></div>
+    <div class="abs eb" style="left:150px;top:1588px">循环，直到完成</div>
+  </section>
+
+  <!-- C 像素 -->
+  <section class="scene clip" id="pix" data-start="2" data-duration="1" data-track-index="3">
+    <canvas id="pc" width="180" height="320"></canvas>
+  </section>
+
+  <!-- D 三维等距 -->
+  <section class="scene clip" id="iso" data-start="3" data-duration="1" data-track-index="4">
+    <svg class="abs" id="isosvg" style="left:0;top:0" width="1080" height="1920" viewBox="0 0 1080 1920"></svg>
+    <div class="ctr" style="top:200px;font-size:96px">AI Agent 怎么干活</div>
+    <div id="isotags"></div>
+    <div class="ctr" style="top:1600px;font-size:50px;font-weight:400;color:#4a4e7a">想 → 做 → 看，直到目标完成</div>
+  </section>
+
+  <!-- E 原理图解（技术） -->
+  <section class="scene clip" id="tech" data-start="4" data-duration="1" data-track-index="5">
+    <div class="abs mono" style="left:100px;top:220px;font-size:34px;color:#7d8590;font-weight:400">// agent loop</div>
+    <div class="abs" style="left:100px;top:270px;font-size:92px">AI Agent 怎么干活</div>
+    <svg class="abs" style="left:0;top:0" width="1080" height="1920" viewBox="0 0 1080 1920">
+      <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#7d8590"/></marker></defs>
+      <path d="M540 590 L540 730" stroke="#7d8590" stroke-width="4" marker-end="url(#ah)"/>
+      <path d="M540 880 L540 1000" stroke="#3ddcff" stroke-width="4" marker-end="url(#ah)"/>
+      <path d="M540 1150 L540 1270" stroke="#7d8590" stroke-width="4" marker-end="url(#ah)"/>
+      <path d="M340 1345 L180 1345 L180 805 L330 805" fill="none" stroke="#7d8590" stroke-width="4" stroke-dasharray="14 10" marker-end="url(#ah)"/>
+      <path d="M750 1075 L900 1075" stroke="#7d8590" stroke-width="4"/>
+    </svg>
+    <div class="blk" style="left:540px;top:530px"><b>目标</b><code>"订周五会议室"</code></div>
+    <div class="blk core" style="left:540px;top:805px"><b>大模型 · 想</b><code>plan()</code></div>
+    <div class="blk" style="left:540px;top:1075px"><b>工具 · 做</b><code>call_tool()</code></div>
+    <div class="blk" style="left:540px;top:1345px"><b>结果 · 看</b><code>check()</code></div>
+    <div class="abs mono" style="left:905px;top:960px;font-size:30px;line-height:1.7;color:#7d8590;font-weight:400">日历<br>搜索<br>邮件</div>
+    <div class="abs mono" style="left:120px;top:1050px;font-size:30px;color:#7d8590;font-weight:400;transform:rotate(-90deg);transform-origin:left top">没完成 → 再来</div>
+    <div class="pkt" style="left:540px;top:940px"></div>
+    <div class="pkt" style="left:180px;top:1100px;background:#7d8590"></div>
+    <div class="abs" style="left:100px;top:1560px;font-size:48px;font-weight:400;color:#b1bac4">想 → 做 → 看，循环到目标完成</div>
+  </section>
+</div>
+
+<script>
+  // ---------- D: isometric 3D (SVG, projected) ----------
+  (function () {
+    var svg = document.getElementById("isosvg"), S = 0.78, cx = 540, cy = 1060;
+    var c30 = Math.cos(Math.PI / 6), s30 = 0.5;
+    function P(x, y, z) { return [cx + (x - y) * c30 * S, cy + (x + y) * s30 * S - z * S]; }
+    function poly(pts, fill) { var p = document.createElementNS("http://www.w3.org/2000/svg", "polygon"); p.setAttribute("points", pts.map(function (q) { return q.join(","); }).join(" ")); p.setAttribute("fill", fill); svg.appendChild(p); }
+    function shade(hex, k) { var n = parseInt(hex.slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255; return "rgb(" + [r, g, b].map(function (v) { return Math.round(v * k); }).join(",") + ")"; }
+    function box(x, y, z, w, d, h, col) {
+      poly([P(x, y + d, z), P(x + w, y + d, z), P(x + w, y + d, z + h), P(x, y + d, z + h)], shade(col, 0.78)); // front-left face
+      poly([P(x + w, y, z), P(x + w, y + d, z), P(x + w, y + d, z + h), P(x + w, y, z + h)], shade(col, 0.9)); // right face
+      poly([P(x, y, z + h), P(x + w, y, z + h), P(x + w, y + d, z + h), P(x, y + d, z + h)], col); // top
+    }
+    // floor slab + soft shadow
+    poly([P(-420, -420, -60), P(420, -420, -60), P(420, 420, -60), P(-420, 420, -60)].map(function (q) { return [q[0], q[1] + 30]; }), "rgba(35,38,74,0.10)");
+    box(-400, -400, -60, 800, 800, 40, "#ffffff");
+    // three pads
+    var pads = [[-330, -330, "#f7b538"], [150, -330, "#ef6f6c"], [-330, 150, "#5bc0be"]];
+    pads.forEach(function (p) { box(p[0], p[1], -20, 180, 180, 40, p[2]); });
+    // little objects on pads: lamp(think) / block tools(act) / screen(check)
+    box(-270, -270, 20, 60, 60, 110, "#ffd166");
+    box(195, -290, 20, 90, 60, 50, "#ffffff"); box(215, -270, 70, 50, 20, 60, "#ef6f6c");
+    box(-290, 195, 20, 100, 30, 120, "#2c3e63"); box(-284, 192, 30, 88, 4, 100, "#bfeeed");
+    // robot at center
+    box(-40, -40, -20, 80, 80, 10, "#23264a");
+    box(-50, -40, -10, 100, 80, 110, "#ef6f6c");
+    box(-65, -55, 100, 130, 110, 100, "#5bc0be");
+    box(-10, 50, 130, 20, 8, 20, "#23264a"); box(-50, 50, 140, 20, 8, 22, "#ffffff"); box(30, 50, 140, 20, 8, 22, "#ffffff");
+    box(-6, -6, 200, 12, 12, 50, "#23264a"); box(-14, -14, 250, 28, 28, 28, "#f7b538");
+    // tags
+    var tags = document.getElementById("isotags");
+    [[-250, -250, 260, "想一想", ""], [250, -250, 180, "动手做", ""], [-250, 250, 230, "看结果", ""]].forEach(function (t) {
+      var q = P(t[0], t[1], t[2]); var d = document.createElement("div"); d.className = "tag"; d.style.left = q[0] + "px"; d.style.top = q[1] + "px";
+      d.innerHTML = t[3]; tags.appendChild(d);
+    });
+    // loop arrows on the floor (flat arcs projected)
+    var g = document.createElementNS("http://www.w3.org/2000/svg", "path"), d = "", a, q;
+    for (a = 0; a <= 300; a += 5) { var r = (a * Math.PI) / 180; q = P(Math.cos(r) * 300 - 0, Math.sin(r) * 300, -20); d += (a ? " L" : "M") + q[0].toFixed(1) + " " + q[1].toFixed(1); }
+    g.setAttribute("d", d); g.setAttribute("fill", "none"); g.setAttribute("stroke", "#23264a"); g.setAttribute("stroke-width", "10"); g.setAttribute("stroke-dasharray", "2 26"); g.setAttribute("stroke-linecap", "round"); g.setAttribute("opacity", "0.35");
+    svg.insertBefore(g, svg.children[3]);
+  })();
+
+  // ---------- C: pixel art, drawn on a 180×320 canvas and scaled 6× ----------
+  var pixDone = false;
+  function drawPix() {
+    if (pixDone) return;
+    var c = document.getElementById("pc"), x = c.getContext("2d");
+    x.imageSmoothingEnabled = false;
+    var bands = ["#141726", "#1b2040", "#232a5c", "#2d3678"]; // sky bands
+    bands.forEach(function (b, i) { x.fillStyle = b; x.fillRect(0, i * 40, 180, 40); });
+    x.fillStyle = "#2d3678"; x.fillRect(0, 160, 180, 160);
+    // stars (fixed positions)
+    x.fillStyle = "#e8e6ff"; [[14, 12], [40, 30], [150, 18], [120, 44], [166, 70], [24, 76], [88, 8]].forEach(function (s) { x.fillRect(s[0], s[1], 1, 1); });
+    // ground
+    x.fillStyle = "#3f8f5a"; x.fillRect(0, 262, 180, 6); x.fillStyle = "#6b4a2f"; x.fillRect(0, 268, 180, 52);
+    x.fillStyle = "#57391f"; for (var i = 0; i < 180; i += 12) x.fillRect(i + ((i / 12) % 2) * 6, 280, 6, 2);
+    // robot sprite (12×16), 1 px = 3 canvas px
+    var spr = [
+      "....00......",
+      ".....1......",
+      ".....1......",
+      "..22222222..",
+      "..23333332..",
+      "..23433432..",
+      "..23333332..",
+      "..23355332..",
+      "..22222222..",
+      "...666666...",
+      ".7.666666.7.",
+      ".7.668866.7.",
+      ".7.666666.7.",
+      "...666666...",
+      "...66..66...",
+      "..999..999.."];
+    var pal = { "0": "#ff5a4e", "1": "#c8c8d8", "2": "#c8c8d8", "3": "#2a2f4a", "4": "#7ff0ff", "5": "#7ff0ff", "6": "#ff8a3d", "7": "#c8c8d8", "8": "#ffe066", "9": "#4a4a66" };
+    spr.forEach(function (row, ry) { for (var rx = 0; rx < row.length; rx++) { var ch = row[rx]; if (ch === ".") continue; x.fillStyle = pal[ch]; x.fillRect(72 + rx * 3, 214 + ry * 3, 3, 3); } });
+    // three item boxes
+    function itemBox(bx, by, col) { x.fillStyle = "#0e1020"; x.fillRect(bx - 1, by - 1, 34, 34); x.fillStyle = col; x.fillRect(bx, by, 32, 32); x.fillStyle = "#ffffff"; x.fillRect(bx + 2, by + 2, 28, 2); }
+    itemBox(20, 112, "#ffd23f"); itemBox(74, 112, "#ff5a4e"); itemBox(128, 112, "#3ec1d3");
+    // icons inside boxes (bulb / hammer / eye), hand-placed pixels
+    x.fillStyle = "#ffffff"; x.fillRect(32, 118, 8, 10); x.fillRect(34, 128, 4, 4);
+    x.fillRect(84, 118, 12, 5); x.fillRect(88, 123, 4, 12);
+    x.fillRect(134, 124, 20, 6); x.fillRect(138, 122, 12, 10); x.fillStyle = "#0e1020"; x.fillRect(142, 125, 4, 4);
+    // pixel text: draw small, then hard-threshold alpha so it stays crisp
+    var t = document.createElement("canvas"); t.width = 180; t.height = 320; var tx = t.getContext("2d");
+    tx.fillStyle = "#fff"; tx.textAlign = "center"; tx.textBaseline = "top";
+    tx.font = "700 16px 'Noto Sans SC'"; tx.fillText("AI Agent", 90, 30); tx.fillText("怎么干活", 90, 50);
+    tx.font = "700 14px 'Noto Sans SC'"; tx.fillText("想一想", 36, 150); tx.fillText("动手做", 90, 150); tx.fillText("看结果", 144, 150);
+    tx.font = "700 12px 'Noto Sans SC'"; tx.fillText("循环到目标完成", 90, 290);
+    var id = tx.getImageData(0, 0, 180, 320), dd = id.data;
+    for (var k = 3; k < dd.length; k += 4) dd[k] = dd[k] > 110 ? 255 : 0;
+    tx.putImageData(id, 0, 0);
+    // drop shadow then text
+    x.globalCompositeOperation = "source-over";
+    var sh = document.createElement("canvas"); sh.width = 180; sh.height = 320; var sx = sh.getContext("2d");
+    sx.drawImage(t, 0, 0); sx.globalCompositeOperation = "source-in"; sx.fillStyle = "#0e1020"; sx.fillRect(0, 0, 180, 320);
+    x.drawImage(sh, 1, 1); x.drawImage(t, 0, 0);
+    pixDone = document.fonts.check("700 16px 'Noto Sans SC'");
+  }
+  drawPix();
+
+  window.__timelines = window.__timelines || {};
+  var tl = gsap.timeline({ paused: true });
+  var o = { v: 0 };
+  tl.fromTo(o, { v: 0 }, { v: 1, duration: 5, ease: "none", onUpdate: drawPix }, 0);
+  window.__timelines.main = tl;
+</script>
+</body>
+</html>
