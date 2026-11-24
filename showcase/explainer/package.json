@@ -1,0 +1,2 @@
+{ "name": "explainer-ai-agent", "private": true, "scripts": { "render": "hyperframes render --output ./renders/explainer.mp4" },
+  "dependencies": { "hyperframes": "0.9.88" } }
