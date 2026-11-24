@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<title>知识科普 v2 · 什么是 AI Agent（线稿手绘）</title>
+<script src="./kit/gsap.min.js"></script>
+<script src="./kit/kit.js"></script>
+<script src="./kit/lineart.js"></script>
+<link rel="stylesheet" href="./kit/fonts/lxgw/lxgw.css" />
+<link rel="stylesheet" href="./kit/kit.css" />
+<link rel="stylesheet" href="./kit/lineart.css" />
+<style>
+  .scene { position: absolute; inset: 0; }
+  .abs { position: absolute; }
+  .ctr { position: absolute; left: 0; right: 0; text-align: center; }
+  #s1 { z-index: 1; } #s2 { z-index: 2; } #s3 { z-index: 4; } #s4 { z-index: 3; }
+  #s5 { z-index: 5; } #s6 { z-index: 6; } #s7 { z-index: 7; }
+  #s3 { background: var(--accent); color: var(--white); clip-path: circle(0px at 811px 1050px); }
+  .box { position: absolute; width: 300px; height: 178px; transform: translate(-50%, -50%); text-align: center; }
+  .box svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .box .bt { position: relative; margin-top: 26px; font-size: 60px; line-height: 1.2; }
+  .box .bs { position: relative; font-size: 40px; color: var(--ink2); }
+  .box .bg2 { fill: var(--white); stroke: none; }
+  .tool { position: absolute; left: 580px; width: 440px; height: 160px; display: flex; align-items: center; gap: 34px; }
+  .tool svg { width: 160px; height: 160px; flex: none; }
+  .tool .lab { font-size: 60px; }
+  .tool .lab b { color: var(--accent); margin-right: 14px; }
+  .num { position: absolute; top: 760px; width: 260px; transform: translateX(-50%); text-align: center; }
+  .num .n { font-size: 190px; line-height: 1; height: 220px; position: relative; display: flex; align-items: center; justify-content: center; }
+  .num .n svg { position: absolute; left: 50%; top: 50%; width: 240px; height: 240px; transform: translate(-50%, -50%); }
+  .num .c { font-size: 60px; margin-top: 40px; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="30" data-width="1080" data-height="1920" data-fps="30">
+  <div class="paper clip" data-start="0" data-duration="30" data-track-index="0"></div>
+
+  <!-- S1 · 大字冲屏 -->
+  <section class="scene clip" id="s1" data-start="0" data-duration="4.4" data-track-index="1">
+    <div class="ctr t-xs muted" id="s1e" style="top:250px">30 秒看懂 AI Agent</div>
+    <svg class="ink abs boil" id="s1u" style="left:340px;top:318px;width:400px;height:30px" viewBox="0 0 400 30"><path class="ln acc thin" pathLength="1" d="M6 18 C90 8 200 26 394 12"/></svg>
+    <svg class="ink abs boil" id="s1b" style="left:110px;top:500px;width:860px;height:420px" viewBox="0 0 860 420">
+      <path class="ln" pathLength="1" d="M70 30 C300 18 580 16 790 28 C830 34 846 60 844 110 C842 180 846 250 832 290 C820 318 790 324 760 324 L330 330 L230 404 L250 330 L80 326 C40 322 22 300 20 250 C16 190 18 120 22 80 C26 46 40 32 70 30 Z"/>
+    </svg>
+    <div class="ctr t-l" id="s1a" style="top:600px">你说一句话</div>
+    <div class="ctr t-xl" id="s1c" style="top:990px">它把事<span class="mk" id="s1m">办完</span></div>
+    <svg class="ink abs boil" id="s1s" style="left:850px;top:930px;width:140px;height:140px" viewBox="0 0 140 140">
+      <path class="ln acc" pathLength="1" d="M40 70 L10 60"/><path class="ln acc" pathLength="1" d="M58 40 L52 8"/><path class="ln acc" pathLength="1" d="M84 46 L112 18"/>
+    </svg>
+    <div class="abs boil" id="s1r" style="left:700px;top:1290px;width:260px" data-robot></div>
+    <div class="abs t-cap muted" id="s1t" style="left:120px;top:1420px;width:560px">不只会聊天<br>还会<span class="acc-c">替你动手</span></div>
+  </section>
+
+  <!-- wipe 1 → 2 -->
+  <div class="clip" data-start="3.5" data-duration="1.0" data-track-index="9" style="position:absolute;inset:0;z-index:50;pointer-events:none"><div class="wipe" id="wipe"></div></div>
+
+  <!-- S2 · 左右分屏对比 -->
+  <section class="scene clip" id="s2" data-start="4" data-duration="4" data-track-index="2">
+    <div class="ctr t-xs muted" id="s2k" style="top:200px">同样一句话</div>
+    <svg class="ink abs boil" id="s2bb" style="left:110px;top:260px;width:860px;height:160px" viewBox="0 0 860 160"><path class="ln" pathLength="1" d="M40 14 C300 6 600 8 820 16 C846 40 848 110 822 142 C600 150 300 152 40 144 C12 116 10 44 40 14 Z"/></svg>
+    <div class="ctr t-s" id="s2q" style="top:300px">帮我订周五下午的会议室</div>
+    <svg class="ink abs boil" id="s2d" style="left:530px;top:520px;width:20px;height:900px" viewBox="0 0 20 900"><path class="ln thin" pathLength="1" d="M10 0 C6 200 14 500 9 900"/></svg>
+    <div class="abs" id="s2L" style="left:0;top:0;width:540px;height:1920px">
+      <div class="ctr t-m" style="top:520px">聊天 AI</div>
+      <svg class="ink abs boil" style="left:60px;top:660px;width:420px;height:340px" viewBox="0 0 420 340">
+        <path class="ln" pathLength="1" d="M30 20 C150 10 280 12 392 22 C410 60 412 200 396 250 C300 258 200 258 150 256 L90 320 L100 256 L28 250 C12 200 12 60 30 20 Z"/>
+      </svg>
+      <div class="abs t-xs" style="left:110px;top:705px;width:330px">你可以先打开日历，再看看谁有空…</div>
+      <div class="abs" id="s2h" style="left:150px;top:1060px;width:220px" data-robot></div>
+      <div class="ctr t-s" style="top:1400px">告诉你<span class="muted">怎么做</span></div>
+    </div>
+    <div class="abs" id="s2R" style="left:540px;top:0;width:540px;height:1920px">
+      <div class="ctr t-m acc-c" style="top:520px">AI Agent</div>
+      <div class="abs boil" id="s2r" style="left:100px;top:760px;width:340px" data-robot></div>
+      <svg class="ink abs boil" id="s2cal" style="left:330px;top:1050px;width:130px;height:130px" viewBox="0 0 160 160">
+        <path class="ln" pathLength="1" d="M22 34 C60 30 100 30 138 34 C142 70 142 110 138 142 C100 146 60 146 22 142 C18 110 18 70 22 34 Z"/>
+        <path class="ln" pathLength="1" d="M22 64 L138 64"/><path class="ln" pathLength="1" d="M52 18 L52 46"/><path class="ln" pathLength="1" d="M108 18 L108 46"/>
+        <path class="ln acc" pathLength="1" d="M60 104 L76 120 L106 88"/>
+      </svg>
+      <div class="ctr t-s" style="top:1400px">直接<span class="acc-c">帮你做</span></div>
+    </div>
+  </section>
+
+  <!-- S3 · 满屏色块 -->
+  <section class="scene clip" id="s3" data-start="7.6" data-duration="4.4" data-track-index="3">
+    <svg class="ink abs boil" id="s3g" style="left:110px;top:300px;width:200px;height:200px" viewBox="0 0 200 200">
+      <path class="ln w" pathLength="1" d="M100 30 L112 52 L138 44 L140 70 L166 78 L154 100 L170 122 L144 130 L142 156 L116 150 L100 172 L84 150 L58 156 L56 130 L30 122 L46 100 L34 78 L60 70 L62 44 L88 52 Z"/>
+      <circle class="ln w" pathLength="1" cx="100" cy="100" r="26"/>
+    </svg>
+    <svg class="ink abs boil" id="s3sp" style="left:800px;top:420px;width:160px;height:160px" viewBox="0 0 160 160">
+      <path class="ln w" pathLength="1" d="M80 20 L80 60"/><path class="ln w" pathLength="1" d="M80 100 L80 140"/><path class="ln w" pathLength="1" d="M20 80 L60 80"/><path class="ln w" pathLength="1" d="M100 80 L140 80"/>
+    </svg>
+    <div class="ctr" id="s3a" style="top:640px;font-size:200px;line-height:1.1">AI Agent</div>
+    <div class="ctr t-m" id="s3b" style="top:960px">= 会自己动手的 AI</div>
+    <svg class="ink abs boil" id="s3u" style="left:240px;top:1070px;width:600px;height:40px" viewBox="0 0 600 40"><path class="ln w" pathLength="1" d="M8 24 C160 10 380 34 592 16"/></svg>
+    <div class="abs boil" id="s3r" style="left:400px;top:1230px;width:280px" data-robot="w"></div>
+  </section>
+
+  <!-- S4 · 图解：想 → 做 → 看 -->
+  <section class="scene clip" id="s4" data-start="11.6" data-duration="6.4" data-track-index="4">
+    <div class="abs" id="s4w" style="inset:0">
+      <div class="ctr t-l" id="s4t" style="top:230px">它怎么干活</div>
+      <svg class="ink abs boil" id="s4ring" style="left:0;top:0;width:1080px;height:1920px" viewBox="0 0 1080 1920">
+        <path class="ln" id="s4c" pathLength="1" d=""/>
+        <path class="ln" id="s4a1" pathLength="1" d=""/><path class="ln" id="s4a2" pathLength="1" d=""/><path class="ln" id="s4a3" pathLength="1" d=""/>
+      </svg>
+      <div class="abs" id="s4hub" style="left:390px;top:850px;width:300px;height:300px;border-radius:50%;background:var(--accent)"></div>
+      <div class="abs boil" id="s4r" style="left:445px;top:880px;width:190px" data-robot="w"></div>
+      <div class="abs" id="s4dot" style="left:0;top:0;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;background:var(--accent);border:6px solid var(--ink)"></div>
+      <div class="box" id="n1" style="left:540px;top:680px"><svg class="ink boil" viewBox="0 0 300 178"><path class="bg2" d="M14 12 L288 10 L290 166 L12 168 Z"/><path class="ln" pathLength="1" d="M14 12 C100 6 200 8 288 10 C294 60 292 120 290 166 C200 172 100 172 12 168 C6 120 8 60 14 12 Z"/></svg><div class="bt"><span class="mk">想一想</span></div><div class="bs">拆解目标</div></div>
+      <div class="box" id="n2" style="left:817px;top:1160px"><svg class="ink boil" viewBox="0 0 300 178"><path class="bg2" d="M14 12 L288 10 L290 166 L12 168 Z"/><path class="ln" pathLength="1" d="M14 12 C100 6 200 8 288 10 C294 60 292 120 290 166 C200 172 100 172 12 168 C6 120 8 60 14 12 Z"/></svg><div class="bt"><span class="mk">动手做</span></div><div class="bs">调用工具</div></div>
+      <div class="box" id="n3" style="left:263px;top:1160px"><svg class="ink boil" viewBox="0 0 300 178"><path class="bg2" d="M14 12 L288 10 L290 166 L12 168 Z"/><path class="ln" pathLength="1" d="M14 12 C100 6 200 8 288 10 C294 60 292 120 290 166 C200 172 100 172 12 168 C6 120 8 60 14 12 Z"/></svg><div class="bt"><span class="mk">看结果</span></div><div class="bs">检查对不对</div></div>
+      <div class="ctr t-cap" id="s4cap" style="top:1480px">想 → 做 → 看<br><span class="muted">一圈圈转，直到目标完成</span></div>
+    </div>
+  </section>
+
+  <!-- S5 · 举例：拿工具 -->
+  <section class="scene clip" id="s5" data-start="17.6" data-duration="6.4" data-track-index="5">
+    <div class="abs" id="s5w" style="inset:0;transform-origin:270px 1540px">
+      <div class="ctr t-xs muted" id="s5k" style="top:200px">举个例子</div>
+      <svg class="ink abs boil" id="s5bb" style="left:110px;top:262px;width:860px;height:160px" viewBox="0 0 860 160"><path class="ln" pathLength="1" d="M40 14 C300 6 600 8 820 16 C846 40 848 110 822 142 C600 150 300 152 40 144 C12 116 10 44 40 14 Z"/></svg>
+      <div class="ctr t-s" id="s5q" style="top:302px">帮我订周五下午的会议室</div>
+      <div class="abs boil" id="s5r" style="left:40px;top:760px;width:360px" data-robot></div>
+      <svg class="ink abs boil" id="s5ln" style="left:0;top:0;width:1080px;height:1920px" viewBox="0 0 1080 1920">
+        <path class="ln dash thin" id="c1" pathLength="1" d="M362 1118 C440 1000 500 700 570 640"/>
+        <path class="ln dash thin" id="c2" pathLength="1" d="M362 1118 C440 1060 500 940 570 920"/>
+        <path class="ln dash thin" id="c3" pathLength="1" d="M362 1118 C440 1160 500 1200 570 1200"/>
+      </svg>
+      <div class="tool" id="t1" style="top:560px"><svg class="ink boil" viewBox="0 0 160 160">
+        <path class="ln" pathLength="1" d="M22 34 C60 30 100 30 138 34 C142 70 142 110 138 142 C100 146 60 146 22 142 C18 110 18 70 22 34 Z"/>
+        <path class="ln" pathLength="1" d="M22 64 L138 64"/><path class="ln" pathLength="1" d="M52 18 L52 46"/><path class="ln" pathLength="1" d="M108 18 L108 46"/>
+        <circle class="ln acc" pathLength="1" cx="98" cy="104" r="16"/></svg><div class="lab"><b>1</b>查日历</div></div>
+      <div class="tool" id="t2" style="top:840px"><svg class="ink boil" viewBox="0 0 160 160">
+        <circle class="ln" pathLength="1" cx="68" cy="68" r="42"/><path class="ln fat" pathLength="1" d="M100 100 L140 140"/>
+        <path class="ln acc thin" pathLength="1" d="M50 82 L50 56 L86 56 L86 82"/></svg><div class="lab"><b>2</b>找空房</div></div>
+      <div class="tool" id="t3" style="top:1120px"><svg class="ink boil" viewBox="0 0 160 160">
+        <path class="ln" pathLength="1" d="M16 44 C60 40 100 40 144 44 C148 74 148 104 144 130 C100 134 60 134 16 130 C12 104 12 74 16 44 Z"/>
+        <path class="ln" pathLength="1" d="M18 48 L80 96 L142 48"/><path class="ln acc thin" pathLength="1" d="M120 20 L150 6 M136 30 L156 30"/></svg><div class="lab"><b>3</b>发邀请</div></div>
+      <svg class="ink abs boil" id="s5ck" style="left:150px;top:1420px;width:240px;height:220px" viewBox="0 0 240 220"><path class="ln acc" pathLength="1" style="stroke-width:22px" d="M20 120 L92 190 L222 24"/></svg>
+      <div class="abs t-l" id="s5ok" style="left:420px;top:1470px">订好了</div>
+    </div>
+  </section>
+
+  <!-- S6 · 数字特写 -->
+  <section class="scene clip" id="s6" data-start="23.7" data-duration="2.4" data-track-index="6">
+    <div class="abs" id="s6w" style="inset:0">
+      <div class="ctr t-s muted" id="s6k" style="top:520px">从一句话到办完</div>
+      <div class="num" id="g1" style="left:190px"><div class="n">1<svg class="ink boil" viewBox="0 0 240 240"><path class="ln" pathLength="1" d="M120 14 C190 12 228 60 226 122 C224 186 180 228 118 226 C56 224 14 184 16 120 C18 60 60 20 128 18"/></svg></div><div class="c">句话</div></div>
+      <div class="num" id="g2" style="left:540px"><div class="n">3<svg class="ink boil" viewBox="0 0 240 240"><path class="ln" pathLength="1" d="M120 14 C190 12 228 60 226 122 C224 186 180 228 118 226 C56 224 14 184 16 120 C18 60 60 20 128 18"/></svg></div><div class="c">步</div></div>
+      <div class="num" id="g3" style="left:890px"><div class="n"><svg class="ink boil" viewBox="0 0 240 240"><path class="ln acc" pathLength="1" style="stroke-width:20px" d="M50 126 L100 176 L192 60"/><path class="ln" pathLength="1" d="M120 14 C190 12 228 60 226 122 C224 186 180 228 118 226 C56 224 14 184 16 120 C18 60 60 20 128 18"/></svg></div><div class="c acc-c">办完</div></div>
+      <svg class="ink abs boil" id="s6ar" style="left:0;top:0;width:1080px;height:1920px" viewBox="0 0 1080 1920">
+        <path class="ln" pathLength="1" d="M326 870 L398 870 M380 852 L400 870 L380 888"/>
+        <path class="ln" pathLength="1" d="M676 870 L748 870 M730 852 L750 870 L730 888"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- S7 · 收尾：整页回看 -->
+  <section class="scene clip" id="s7" data-start="25.8" data-duration="4.2" data-track-index="7">
+    <div class="abs" id="s7w" style="inset:0;transform-origin:540px 900px">
+      <svg class="ink abs boil" style="left:90px;top:230px;width:330px;height:180px" viewBox="0 0 860 420"><path class="ln" style="stroke-width:14px" pathLength="1" d="M70 30 C300 18 580 16 790 28 C830 34 846 60 844 110 C842 180 846 250 832 290 C820 318 790 324 760 324 L330 330 L230 404 L250 330 L80 326 C40 322 22 300 20 250 C16 190 18 120 22 80 C26 46 40 32 70 30 Z"/></svg>
+      <div class="abs t-xs" style="left:150px;top:278px;width:220px;text-align:center">你说一句话</div>
+      <svg class="ink abs boil" style="left:690px;top:210px;width:270px;height:270px" viewBox="0 0 270 270"><circle class="ln" pathLength="1" cx="135" cy="135" r="100"/><path class="ln" pathLength="1" d="M226 112 L236 140 L210 132"/><circle class="fl acc" cx="135" cy="35" r="14"/><circle class="fl acc" cx="135" cy="135" r="40"/></svg>
+      <div class="abs boil" style="left:90px;top:1340px;width:250px" data-robot></div>
+      <svg class="ink abs boil" style="left:700px;top:1350px;width:130px;height:130px" viewBox="0 0 160 160"><path class="ln" pathLength="1" d="M22 34 C60 30 100 30 138 34 C142 70 142 110 138 142 C100 146 60 146 22 142 C18 110 18 70 22 34 Z"/><path class="ln" pathLength="1" d="M22 64 L138 64"/><path class="ln" pathLength="1" d="M52 18 L52 46"/><path class="ln" pathLength="1" d="M108 18 L108 46"/></svg>
+      <svg class="ink abs boil" style="left:850px;top:1360px;width:120px;height:120px" viewBox="0 0 160 160"><path class="ln" pathLength="1" d="M16 44 C60 40 100 40 144 44 C148 74 148 104 144 130 C100 134 60 134 16 130 C12 104 12 74 16 44 Z"/><path class="ln" pathLength="1" d="M18 48 L80 96 L142 48"/></svg>
+      <svg class="ink abs boil" style="left:760px;top:1530px;width:150px;height:130px" viewBox="0 0 240 220"><path class="ln acc" pathLength="1" style="stroke-width:24px" d="M20 120 L92 190 L222 24"/></svg>
+      <div class="ctr" id="s7a" style="top:700px;font-size:170px;line-height:1.1"><span class="mk" id="s7m">AI Agent</span></div>
+      <div class="ctr t-m" id="s7b" style="top:960px">目标 · 工具 · 检查</div>
+      <div class="ctr t-xs muted" id="s7c" style="top:1110px">给它目标，它自己找工具，做完再检查</div>
+    </div>
+  </section>
+</div>
+
+<script>
+  L.installFilters();
+  document.querySelectorAll("[data-robot]").forEach(function (el) { el.innerHTML = L.robot("", el.getAttribute("data-robot") || ""); });
+  document.querySelectorAll(".robot").forEach(function (s) { s.style.width = "100%"; s.style.height = "auto"; s.style.display = "block"; });
+
+  // S4 geometry: ring + three arrowheads, computed once.
+  (function () {
+    var cx = 540, cy = 1000, R = 330;
+    var pt = function (a, r) { r = r || R; a = a * Math.PI / 180; return [cx + r * Math.cos(a), cy + r * Math.sin(a)]; };
+    var d = "", i, p;
+    for (i = 0; i <= 72; i++) { p = pt(-90 + i * 5, R + Math.sin(i * 0.7) * 4); d += (i ? " L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1); }
+    document.getElementById("s4c").setAttribute("d", d);
+    [-30, 90, 210].forEach(function (a, k) {
+      var tip = pt(a + 4), b1 = pt(a - 6, R - 26), b2 = pt(a - 6, R + 26);
+      document.getElementById("s4a" + (k + 1)).setAttribute("d", "M" + b1.join(" ") + " L" + tip.join(" ") + " L" + b2.join(" "));
+    });
+    window.__ringPt = pt;
+  })();
+
+  window.__timelines = window.__timelines || {};
+  var tl = gsap.timeline({ paused: true });
+  var SPB = 0.5; // 120 BPM
+  L.boil(tl, 30, 0.1);
+
+  // ---------- S1 (0–4) ----------
+  K.rise(tl, "#s1e", 0.0, { y: 20, d: 0.4 });
+  L.drawAll(tl, "#s1u", 0.3, 0.4);
+  L.drawAll(tl, "#s1b", 0.1, 0.8);
+  K.riseChars(tl, "#s1a", 0.5, { stagger: 0.06 });
+  L.slam(tl, "#s1c", 2.0, 1.7);
+  L.drawAll(tl, "#s1s", 2.1, 0.25, 0.06);
+  K.mark(tl, "#s1m", 2.5);
+  tl.fromTo("#s1r", { autoAlpha: 0, y: 80 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: "expo.out" }, 2.5);
+  L.drawAll(tl, "#s1r", 2.5, 0.4, 0.02);
+  tl.fromTo("#s1r .r-arm-r", { rotation: 0, svgOrigin: "200 230" }, { rotation: -60, duration: SPB / 2, ease: "sine.inOut", yoyo: true, repeat: 3 }, 3.0);
+  K.rise(tl, "#s1t", 3.0, { y: 24, d: 0.4 });
+  tl.fromTo("#wipe", { xPercent: -120 }, { xPercent: 0, duration: 0.42, ease: "power3.in" }, 3.58);
+  tl.to("#wipe", { xPercent: 120, duration: 0.45, ease: "power3.out" }, 4.0);
+
+  // ---------- S2 (4–8) ----------
+  K.rise(tl, "#s2k", 4.1, { y: 16, d: 0.3 });
+  L.drawAll(tl, "#s2bb", 4.1, 0.4);
+  K.riseChars(tl, "#s2q", 4.2, { stagger: 0.025, d: 0.4 });
+  L.drawAll(tl, "#s2d", 4.4, 0.5);
+  tl.fromTo("#s2L", { autoAlpha: 0, x: -40 }, { autoAlpha: 1, x: 0, duration: 0.4, ease: "expo.out" }, 4.5);
+  L.drawAll(tl, "#s2L", 4.5, 0.5, 0.03);
+  tl.fromTo("#s2R", { autoAlpha: 0, x: 40 }, { autoAlpha: 1, x: 0, duration: 0.4, ease: "expo.out" }, 6.0);
+  L.drawAll(tl, "#s2R", 6.0, 0.5, 0.02);
+  L.dots(tl, "#s2R", 6.2);
+  tl.to("#s2L", { opacity: 0.35, duration: 0.4 }, 6.5);
+  L.bob(tl, "#s2r", 6.5, 7.5, SPB, 10);
+  tl.to("#s2", { scale: 1.25, transformOrigin: "811px 1050px", duration: 0.5, ease: "power2.in" }, 7.5);
+
+  // ---------- S3 (8–12) ----------
+  tl.to("#s3", { clipPath: "circle(2300px at 811px 1050px)", duration: 0.45, ease: "power3.in" }, 7.6);
+  L.slam(tl, "#s3a", 8.0, 1.5);
+  L.drawAll(tl, "#s3g", 8.1, 0.5); L.drawAll(tl, "#s3sp", 8.5, 0.2, 0.05);
+  tl.fromTo("#s3g", { rotation: 0 }, { rotation: 90, duration: 4, ease: "none" }, 8.0);
+  K.riseChars(tl, "#s3b", 10.0, { stagger: 0.04 });
+  L.drawAll(tl, "#s3u", 10.4, 0.4);
+  L.drawAll(tl, "#s3r", 8.6, 0.5, 0.02); L.dots(tl, "#s3r", 8.8);
+  L.bob(tl, "#s3r", 9.0, 11.5, SPB, 12);
+  tl.fromTo("#s3", { clipPath: "circle(2300px at 811px 1050px)" }, { clipPath: "circle(150px at 540px 1000px)", duration: 0.4, ease: "power3.in", immediateRender: false }, 11.6);
+  tl.to("#s3 > *", { autoAlpha: 0, duration: 0.2 }, 11.6);
+
+  // ---------- S4 (12–18) ----------
+  L.drawAll(tl, "#s4r", 11.9, 0.4, 0.02);
+  K.riseChars(tl, "#s4t", 12.0, { stagger: 0.05 });
+  tl.fromTo("#s4c", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.0, ease: "power2.inOut" }, 12.2);
+  ["#n1", "#n2", "#n3"].forEach(function (n, k) {
+    tl.fromTo(n, { autoAlpha: 0, scale: 0.8 }, { autoAlpha: 1, scale: 1, duration: 0.35, ease: "expo.out" }, 12.5 + k * 0.5);
+    L.drawAll(tl, n, 12.5 + k * 0.5, 0.4);
+  });
+  L.drawAll(tl, "#s4ring", 13.2, 0.2, 0.1);
+  var dot = { a: -90 };
+  tl.fromTo("#s4dot", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 }, 13.8);
+  tl.fromTo(dot, { a: -90 }, { a: 270, duration: 3.0, ease: "none", onUpdate: function () {
+    var p = window.__ringPt(dot.a); var e = document.getElementById("s4dot"); e.style.left = p[0] + "px"; e.style.top = p[1] + "px";
+  } }, 14.0);
+  [["#n1", 14.0], ["#n2", 15.0], ["#n3", 16.0]].forEach(function (p) {
+    K.mark(tl, p[0] + " .mk", p[1]);
+    tl.fromTo(p[0], { scale: 1 }, { scale: 1.08, duration: SPB / 2, yoyo: true, repeat: 1, ease: "sine.inOut", immediateRender: false }, p[1]);
+  });
+  L.bob(tl, "#s4r", 14.0, 17.5, SPB, 8);
+  K.rise(tl, "#s4cap", 14.0, { y: 24, d: 0.4 });
+  tl.to("#s4w", { y: -1920, duration: 0.5, ease: "power3.inOut" }, 17.55);
+
+  // ---------- S5 (18–24) ----------
+  tl.fromTo("#s5w", { y: 1920 }, { y: 0, duration: 0.5, ease: "power3.inOut" }, 17.55);
+  L.drawAll(tl, "#s5bb", 18.0, 0.4);
+  K.riseChars(tl, "#s5q", 18.05, { stagger: 0.025, d: 0.4 });
+  K.rise(tl, "#s5k", 18.0, { y: 16, d: 0.3 });
+  L.dots(tl, "#s5r", 18.0);
+  [["#t1", "#c1", 19.0], ["#t2", "#c2", 20.0], ["#t3", "#c3", 21.0]].forEach(function (p) {
+    tl.fromTo(p[1], { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.3, ease: "power2.out" }, p[2] - 0.05);
+    tl.fromTo(p[0], { autoAlpha: 0, x: -30 }, { autoAlpha: 1, x: 0, duration: 0.35, ease: "expo.out" }, p[2]);
+    L.drawAll(tl, p[0], p[2], 0.35, 0.03);
+    tl.fromTo("#s5r .r-arm-r", { rotation: 0, svgOrigin: "200 230" }, { rotation: -25, duration: SPB / 2, yoyo: true, repeat: 1, ease: "sine.inOut", immediateRender: false }, p[2]);
+  });
+  L.bob(tl, "#s5r", 18.0, 22.0, SPB, 10);
+  L.drawAll(tl, "#s5ck", 22.0, 0.35);
+  L.slam(tl, "#s5ok", 22.5, 1.5);
+  tl.to("#s5w", { scale: 7, duration: 0.45, ease: "power3.in" }, 23.55);
+  tl.to("#s5w", { autoAlpha: 0, duration: 0.15 }, 23.85);
+
+  // ---------- S6 (24–26) ----------
+  K.rise(tl, "#s6k", 23.8, { y: 16, d: 0.3 });
+  [["#g1", 24.0], ["#g2", 24.5], ["#g3", 25.0]].forEach(function (p) {
+    L.slam(tl, p[0], p[1], 1.8);
+    L.drawAll(tl, p[0], p[1] + 0.05, 0.3, 0.05);
+  });
+  L.drawAll(tl, "#s6ar", 24.3, 0.25, 0.5);
+  tl.to("#s6w", { scale: 0.45, autoAlpha: 0, duration: 0.4, ease: "power3.in" }, 25.75);
+
+  // ---------- S7 (26–30) ----------
+  tl.fromTo("#s7w", { scale: 2.3, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.9, ease: "power3.out" }, 25.9);
+  L.dots(tl, "#s7w", 26.0);
+  K.riseChars(tl, "#s7a", 26.4, { stagger: 0.05 });
+  K.mark(tl, "#s7m", 28.0);
+  K.riseChars(tl, "#s7b", 28.0, { stagger: 0.04 });
+  K.rise(tl, "#s7c", 28.5, { y: 20, d: 0.4 });
+
+  window.__timelines.main = tl;
+</script>
+</body>
+</html>
