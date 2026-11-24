@@ -1,0 +1,2 @@
+{ "name": "explainer-v2-lineart", "private": true, "scripts": { "render": "hyperframes render --output ./renders/explainer-v2.mp4" },
+  "dependencies": { "hyperframes": "0.9.88" } }
