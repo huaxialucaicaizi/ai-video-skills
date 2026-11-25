@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<title>知识科普 · 像素风 · 什么是 AI Agent</title>
+<script src="./kit/gsap.min.js"></script>
+<style>
+  @font-face { font-family: "FusionPixel"; src: url("./kit/fonts/pixel/fusion-pixel-12px-sc.woff2") format("woff2"); font-weight: 400; font-display: block; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+  #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #12142b; font-family: "FusionPixel", monospace; }
+  #cv { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; image-rendering: pixelated; }
+  .fontwarm { position: absolute; left: -999px; top: 0; font-size: 12px; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="30" data-width="1080" data-height="1920" data-fps="30">
+  <div class="clip" data-start="0" data-duration="30" data-track-index="0" style="position:absolute;inset:0">
+    <canvas id="cv" width="180" height="320"></canvas>
+  </div>
+  <audio id="music" src="./music.m4a" data-start="0" data-duration="30" data-track-index="10" data-volume="1"></audio>
+  <span class="fontwarm">什么是AI Agent</span>
+</div>
+
+<script>
+/* Pixel explainer. One canvas, 180×320, scaled 6×. draw(t) depends only on t. */
+var W = 180, H = 320, cv = document.getElementById("cv"), g = cv.getContext("2d");
+g.imageSmoothingEnabled = false;
+var C = { night: "#12142b", sky1: "#1c2150", sky2: "#2a3270", star: "#e9e6ff", grass: "#4fa35b", grassD: "#2f6b3e",
+  dirt: "#7a4e2f", dirtD: "#573620", yel: "#ffcf4a", red: "#ef4f43", org: "#ff8c3a", cyan: "#47d3e0", wht: "#f4f1ff",
+  gray: "#9aa0c0", dark: "#0c0d1a", box: "#c9772e", boxL: "#f0a04b", boxD: "#7d4214" };
+var BPM = 120, SPB = 60 / BPM;
+
+// ---------- helpers ----------
+function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+function seg(t, a, b) { return clamp((t - a) / (b - a), 0, 1); }       // 0→1 between a and b
+function ease(p) { return 1 - Math.pow(1 - p, 3); }
+function R(x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); }
+
+// pixel text: render at the font's native 12px, hard-threshold, tint, scale with nearest neighbour
+var tcache = {};
+function glyphs(s, col) {
+  var k = s + "|" + col; if (tcache[k]) return tcache[k];
+  var m = document.createElement("canvas").getContext("2d"); m.font = "12px FusionPixel";
+  var w = Math.ceil(m.measureText(s).width) + 1, c = document.createElement("canvas"); c.width = Math.max(1, w); c.height = 14;
+  var x = c.getContext("2d"); x.font = "12px FusionPixel"; x.textBaseline = "top"; x.fillStyle = col; x.fillText(s, 0, 1);
+  var id = x.getImageData(0, 0, c.width, 14), d = id.data;
+  for (var i = 3; i < d.length; i += 4) d[i] = d[i] > 100 ? 255 : 0;
+  x.putImageData(id, 0, 0);
+  if (document.fonts.check("12px FusionPixel")) tcache[k] = c;
+  return c;
+}
+function T(s, x, y, sc, col, align, shadow) {
+  if (!s) return 0;
+  sc = sc || 1; var c = glyphs(s, col || C.wht), w = c.width * sc;
+  var X = align === "c" ? x - w / 2 : align === "r" ? x - w : x;
+  if (shadow !== false) g.drawImage(glyphs(s, C.dark), Math.round(X) + sc, Math.round(y) + sc, w, 14 * sc);
+  g.drawImage(c, Math.round(X), Math.round(y), w, 14 * sc);
+  return w;
+}
+function type(s, t0, t, cps) { return s.slice(0, Math.max(0, Math.floor((t - t0) * (cps || 14)))); }
+
+// sprites: rows of palette keys, "." transparent
+var PAL = { r: C.red, s: "#c8c8d8", S: "#8a8aa6", k: "#2a2f4a", c: "#7ff0ff", o: C.org, y: C.yel, d: "#4a4a66", w: C.wht, b: "#5b6fd6", B: "#3a4aa8", p: "#f2b6a0", g: C.grass, n: "#6b5a4a" };
+var HERO = {
+  idle: ["....rr......", ".....s......", "..ssssssss..", "..skkkkkks..", "..skckkcks..", "..skkkkkks..", "..skkcckks..", "..ssssssss..", "...oooooo...", ".s.oooooo.s.", ".s.ooyyoo.s.", ".s.oooooo.s.", "...oooooo...", "...oo..oo...", "...oo..oo...", "..ddd..ddd.."],
+  run1: ["....rr......", ".....s......", "..ssssssss..", "..skkkkkks..", "..skkcckcs..", "..skkkkkks..", "..skkkcckS..", "..ssssssss..", "...oooooo.s.", ".s.oooooo.s.", "s..ooyyoo...", "...oooooo...", "...oooooo...", "..oo....oo..", ".ddd.....oo.", "........ddd."],
+  run2: ["............", "....rr......", ".....s......", "..ssssssss..", "..skkkkkks..", "..skkcckcs..", "..skkkkkks..", "..skkkcckS..", "..ssssssss..", ".s.oooooo...", ".s.oooooo.s.", "...ooyyoo.s.", "...oooooo...", "....oooo....", "....oddo....", "...ddd......"],
+  jump: [".s..rr...s..", ".s...s...s..", ".sssssssss..", "..skkkkkks..", "..skcckccs..", "..skkkkkks..", "..skkcckks..", "..ssssssss..", "...oooooo...", "...oooooo...", "...ooyyoo...", "...oooooo...", "...oooooo...", "..oo....oo..", ".dd......dd.", "............"]
+};
+var NPC = ["...bbbbbb...", "..bBBBBBBb..", "..bpppppbb..", "..bpkppkpb..", "..bppppppb..", "..bppkkppb..", "...bbbbbb...", "..bbbbbbbb..", ".pbbbbbbbbp.", ".pbbbbbbbbp.", "..bbbbbbbb..", "..BB....BB..", "..dd....dd.."];
+var ICON = {
+  bulb: ["..yyyy..", ".yywwyy.", ".ywyyyy.", ".yyyyyy.", "..yyyy..", "...ss...", "..ssss..", "...ss..."],
+  hammer: ["ssssss..", "ssssss..", "..nn....", "..nn....", "..nn....", "..nn....", "..nn....", "..nn...."],
+  eye: ["........", "..wwww..", ".wwkkww.", "wwkcckww", "wwkcckww", ".wwkkww.", "..wwww..", "........"],
+  cal: ["s......s", "rrrrrrrr", "rrrrrrrr", "wwwwwwww", "wkwkwkww", "wwwwwkkw", "wkwkwkkw", "wwwwwwww"],
+  mag: ["..ssss..", ".sccccs.", ".sccccs.", ".sccccs.", "..ssss..", "....nn..", ".....nn.", "......nn"],
+  env: ["........", "wwwwwwww", "wkwwwwkw", "wwkwwkww", "wwwkkwww", "wwwwwwww", "wwwwwwww", "........"]
+};
+function SPR(rows, x, y, sc, flip) {
+  sc = sc || 1;
+  for (var j = 0; j < rows.length; j++) for (var i = 0; i < rows[j].length; i++) {
+    var ch = rows[j][flip ? rows[j].length - 1 - i : i]; if (ch === ".") continue;
+    R(x + i * sc, y + j * sc, sc, sc, PAL[ch]);
+  }
+}
+
+// ---------- shared backgrounds ----------
+var STARS = [[12, 14], [40, 30], [150, 18], [120, 44], [166, 70], [24, 76], [88, 8], [62, 58], [140, 96], [8, 120], [104, 112], [172, 140]];
+function night(groundY) {
+  R(0, 0, W, H, C.night); R(0, 60, W, 60, C.sky1); R(0, 120, W, H - 120, C.sky2);
+  STARS.forEach(function (s) { if (s[1] < groundY - 20) R(s[0], s[1], 1, 1, C.star); });
+  ground(groundY, 0);
+}
+function ground(y, scroll) {
+  R(0, y, W, 4, C.grass); R(0, y + 4, W, 2, C.grassD); R(0, y + 6, W, H - y - 6, C.dirt);
+  var o = ((scroll || 0) % 12 + 12) % 12;
+  for (var x = -12; x < W + 12; x += 12) for (var r = 0; r * 10 + y + 12 < H; r++) R(x - o + (r % 2) * 6, y + 12 + r * 10, 6, 2, C.dirtD);
+}
+function panel(x, y, w, h, fill, border) {
+  R(x, y, w, h, border || C.wht); R(x + 1, y + 1, w - 2, h - 2, C.dark); R(x + 2, y + 2, w - 4, h - 4, fill || C.night);
+}
+function block(x, y, label, hit) {
+  R(x, y, 24, 24, C.dark); R(x + 1, y + 1, 22, 22, hit ? C.boxD : C.box); R(x + 1, y + 1, 22, 2, hit ? C.boxD : C.boxL);
+  R(x + 1, y + 1, 2, 22, hit ? C.boxD : C.boxL); T(label, x + 12, y + 5, 1, hit ? C.yel : C.wht, "c", false);
+}
+function heroFrame(t) { return (Math.floor(t / (SPB / 2)) % 2) ? HERO.run1 : HERO.run2; }
+
+// ---------- scenes ----------
+function S1(t) {
+  night(262); if (t < 3.0) SPR(HERO.idle, 78, 230, 2);
+  var p = ease(seg(t, 0, 0.5));
+  T("什么是", 90, -30 + p * 66, 2, C.gray, "c");
+  T("AI Agent", 90, -60 + p * 120, 3, C.yel, "c");
+  if (t >= 2.0) {
+    var q = ease(seg(t, 2.0, 2.2)), h = Math.round(56 * q);
+    panel(12, 150 + (56 - h) / 2, 156, Math.max(4, h));
+    if (q >= 1) {
+      T(type("你说一句话", 2.25, t), 22, 160, 1, C.wht, "l", false);
+      var l2 = type("它把事办完", 2.7, t);
+      T(l2.slice(0, 3), 22, 180, 1, C.wht, "l", false);
+      if (l2.length > 3) T(l2.slice(3), 22 + glyphs("它把事", C.wht).width, 180, 1, C.yel, "l", false);
+      if (t > 3.2 && Math.floor(t / SPB) % 2 === 0) R(152, 196, 6, 4, C.wht); // "next" cue, on the beat
+    }
+  }
+  if (t >= 3.0) SPR(HERO.jump, 78, 230 - Math.round(Math.sin(seg(t, 3.0, 3.5) * Math.PI) * 12), 2); // hop on the beat
+}
+function S2(t) {
+  R(0, 0, W, H, C.night); R(0, 120, W, H, C.sky1);
+  T("同样一句话", 90, 10, 1, C.gray, "c", false);
+  panel(14, 26, 152, 24); T("帮我订周五的会议室", 90, 32, 1, C.wht, "c", false);
+  R(89, 60, 2, 200, C.gray);
+  ground(262, t >= 6 ? (t - 6) * 60 : 0);
+  // left: chat AI (NPC that only talks)
+  if (t >= 4.4) {
+    T("聊天 AI", 45, 66, 1, C.wht, "c");
+    panel(6, 88, 80, 64); var said = type("你可以先打开日历再看看谁有空…", 4.6, t, 16);
+    T(said.slice(0, 6), 12, 94, 1, C.wht, "l", false); T(said.slice(6, 12), 12, 110, 1, C.wht, "l", false); T(said.slice(12), 12, 126, 1, C.wht, "l", false);
+    SPR(NPC, 33, 236, 2);
+    T("只会告诉你", 45, 280, 1, C.wht, "c");
+  }
+  // right: the agent runs
+  if (t >= 6.0) {
+    T("AI Agent", 135, 66, 1, C.cyan, "c");
+    var fr = heroFrame(t); SPR(fr, 117, 230, 2);
+    SPR(ICON.cal, 147, 236 + (Math.floor(t / SPB) % 2), 1);
+    T("会自己去做", 135, 280, 1, C.yel, "c");
+    // speed lines (fixed rows, moving): plain pixels, no glow
+    for (var i = 0; i < 4; i++) { var x = 180 - ((t * 140 + i * 47) % 90); R(x, 200 + i * 12, 8, 1, C.gray); }
+  }
+  if (t >= 6.5) { g.globalAlpha = 0.55 * seg(t, 6.5, 6.8); R(0, 60, 89, 222, C.dark); g.globalAlpha = 1; }
+}
+function S3(t) {
+  R(0, 0, W, H, C.red);
+  T("第 1 关", 90, 60, 1, C.wht, "c");
+  var p = ease(seg(t, 8.0, 8.4)); T("AI Agent", 90, -50 + p * 150, 3, C.wht, "c");
+  if (t >= 10.0) { T(type("= 会自己动手的 AI", 10.0, t, 18), 90, 160, 1, C.yel, "c"); }
+  SPR((Math.floor(t / SPB) % 2) ? HERO.jump : HERO.idle, 78, 230, 2);
+}
+var BX = [18, 78, 138], BY = 172;
+function heroX4(t) { // runs in, stops under each block on its beat
+  var pts = [[12.4, -26], [13.6, BX[0]], [14.6, BX[1]], [15.6, BX[2]], [16.2, BX[2]]];
+  for (var i = 0; i < pts.length - 1; i++) if (t < pts[i + 1][0]) return pts[i][1] + (pts[i + 1][1] - pts[i][1]) * seg(t, pts[i][0], pts[i + 1][0]);
+  return pts[pts.length - 1][1];
+}
+function S4(t) {
+  night(250); T("它怎么干活", 90, 14, 2, C.wht, "c");
+  var hits = [14.0, 15.0, 16.0], names = ["想", "做", "看"], lab = ["想一想", "动手做", "看结果"], sub = ["拆解目标", "调用工具", "检查对不对"], ic = [ICON.bulb, ICON.hammer, ICON.eye];
+  for (var k = 0; k < 3; k++) {
+    var hit = t >= hits[k], bump = hit && t < hits[k] + 0.15 ? -3 : 0;
+    block(BX[k], BY + bump, names[k], hit);
+    if (hit) {
+      var p = ease(seg(t, hits[k], hits[k] + 0.3)); SPR(ic[k], BX[k] + 4, BY - 8 - p * 20, 2);
+      var ly = 58 + k * 26; R(16, ly + 3, 6, 6, C.yel); T(lab[k], 28, ly, 1, C.yel, "l"); T(sub[k], 164, ly, 1, C.wht, "r", false);
+    }
+  }
+  // hero: jumps on 14/15/16
+  var x = heroX4(t), y = 218, fr = HERO.idle, moving = t > 12.4 && t < 16.0;
+  for (k = 0; k < 3; k++) { var a = hits[k] - 0.25, b = hits[k] + 0.25; if (t >= a && t < b) { y = 218 - Math.round(Math.sin(seg(t, a, b) * Math.PI) * 22); fr = HERO.jump; moving = false; } }
+  if (moving) fr = heroFrame(t);
+  SPR(fr, x, y, 2);
+  if (t >= 17.0) { // loop arrow back to the first block
+    var p2 = seg(t, 17.0, 17.4), len = Math.round(102 * p2);
+    R(BX[2] + 12 - len, 136, len, 2, C.cyan); R(BX[2] + 12, 136, 2, 6, C.cyan);
+    if (p2 >= 1) { R(BX[0] + 12, 136, 2, 6, C.cyan); R(BX[0] + 9, 140, 8, 2, C.cyan); R(BX[0] + 10, 142, 6, 1, C.cyan); }
+  }
+  if (t >= 14.0) { R(0, 272, W, 30, C.dirtD); T("想 → 做 → 看 循环到完成", 90, 280, 1, C.wht, "c"); }
+}
+var IX = [44, 84, 124], items = [ICON.cal, ICON.mag, ICON.env], iname = ["查日历", "找空房", "发邀请"];
+function heroX5(t) { var pts = [[18.0, -4], [19.0, IX[0]], [20.0, IX[1]], [21.0, IX[2]], [22.0, 140]]; for (var i = 0; i < 4; i++) if (t < pts[i + 1][0]) return pts[i][1] + (pts[i + 1][1] - pts[i][1]) * seg(t, pts[i][0], pts[i + 1][0]); return 140; }
+function S5(t) {
+  night(250);
+  panel(6, 8, 168, 40); T("任务", 14, 14, 1, C.yel, "l", false); T("订周五下午的会议室", 14, 30, 1, C.wht, "l", false);
+  // inventory
+  T("道具", 14, 56, 1, C.gray, "l", false);
+  for (var k = 0; k < 3; k++) {
+    R(48 + k * 30, 52, 26, 26, C.gray); R(49 + k * 30, 53, 24, 24, C.dark);
+    var got = t >= 19 + k;
+    if (got) SPR(items[k], 53 + k * 30, 57, 2);
+    else if (t >= 18.2) SPR(items[k], IX[k] + 4, 196 + (Math.floor(t / SPB) % 2) * 2, 2);
+    if (got) { var p = ease(seg(t, 19 + k, 19.3 + k)); T((k + 1) + " " + iname[k], 26, 92 + k * 18, 1, C.wht, "l"); R(14, 95 + k * 18, 6, 6, p >= 1 ? C.yel : C.gray); }
+  }
+  // flag
+  R(166, 196, 2, 54, C.gray); var fy = t >= 22 ? 196 + Math.round(30 * (1 - ease(seg(t, 22, 22.4)))) : 226; R(168, fy, 10, 7, t >= 22 ? C.yel : C.red);
+  var x = heroX5(t), y = 218, fr = t < 22 && t >= 18 ? heroFrame(t) : HERO.jump;
+  for (k = 0; k < 3; k++) { var a = 19 + k - 0.2, b = 19 + k + 0.2; if (t >= a && t < b) { y = 218 - Math.round(Math.sin(seg(t, a, b) * Math.PI) * 14); fr = HERO.jump; } }
+  if (t >= 22) { y = 218 - Math.round(Math.abs(Math.sin((t - 22) * Math.PI / SPB)) * 8); fr = HERO.jump; }
+  SPR(fr, Math.min(x, 140), y, 2);
+  if (t >= 22.5) { var q = ease(seg(t, 22.5, 22.8)); panel(30, 160 - q * 6, 120, 34, C.night, C.yel); T("任务完成", 90, 165 - q * 6, 2, C.yel, "c"); }
+}
+function S6(t) {
+  R(0, 0, W, H, C.dark); T("结算", 90, 40, 2, C.wht, "c");
+  var rows = [["指令", "1 句话", 24.0], ["步骤", "3 步", 24.5], ["结果", "办完", 25.0]];
+  rows.forEach(function (r, i) {
+    if (t < r[2]) return; var y = 110 + i * 46, p = ease(seg(t, r[2], r[2] + 0.2));
+    T(r[0], 22, y + 4, 1, C.gray, "l", false); R(22, y + 24, 136 * p, 1, C.gray);
+    T(r[1], 158, y - 4 + (1 - p) * 8, 2, i === 2 ? C.yel : C.wht, "r");
+  });
+}
+function S7(t) {
+  night(262);
+  var p = ease(seg(t, 26.0, 26.4)); T("通关", 90, -40 + p * 76, 3, C.yel, "c");
+  var arm = Math.floor(t / SPB) % 2; SPR(arm ? HERO.jump : HERO.idle, 72, 214, 3);
+  [ICON.cal, ICON.mag, ICON.env].forEach(function (ic, k) { SPR(ic, 34 + k * 50 + (k === 1 ? 0 : 0), 190 + ((Math.floor(t / SPB) + k) % 2) * 2, 2); });
+  if (t >= 28.0) {
+    var q = ease(seg(t, 28.0, 28.3)); panel(10, 96, 160, 78, C.night, C.wht);
+    T("AI Agent", 90, 102, 2, C.cyan, "c");
+    T(type("目标 · 工具 · 检查", 28.2, t, 20), 90, 132, 1, C.yel, "c", false);
+    T(type("给它目标 它自己找工具", 28.6, t, 24), 90, 148, 1, C.wht, "c", false);
+    T(type("做完再检查", 29.1, t, 24), 90, 160, 1, C.wht, "c", false);
+  }
+}
+
+// transitions
+function blockWipe(t, a, mid, b) { // cover a→mid, uncover mid→b, 10px tiles, diagonal order
+  var cols = 18, rows = 32;
+  for (var j = 0; j < rows; j++) for (var i = 0; i < cols; i++) {
+    var o = (i + j * 0.35) / (cols + rows * 0.35);
+    var on = t < mid ? t >= a + o * (mid - a) : t < mid + o * (b - mid);
+    if (on) R(i * 10, j * 10, 10, 10, C.dark);
+  }
+}
+var off = document.createElement("canvas"); off.width = W; off.height = H; var og = off.getContext("2d"); og.imageSmoothingEnabled = false;
+function zoomInto(drawFn, t, a, b, cx, cy) { // pixels grow toward (cx, cy)
+  var keep = g; g = og; drawFn(t); g = keep;
+  var s = 1 + 11 * Math.pow(seg(t, a, b), 2), w = W / s, h = H / s;
+  g.drawImage(off, clamp(cx - w / 2, 0, W - w), clamp(cy - h / 2, 0, H - h), w, h, 0, 0, W, H);
+}
+function dither(t, a, b) { // ordered fade to black
+  var p = seg(t, a, b), M = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+  for (var j = 0; j < H; j += 4) for (var i = 0; i < W; i += 4) if (M[((j / 4) % 4) * 4 + (i / 4) % 4] / 16 < p) R(i, j, 4, 4, C.dark);
+}
+
+function draw(t) {
+  g.globalAlpha = 1;
+  if (t < 4.0) { S1(t); if (t >= 3.6) blockWipe(t, 3.6, 4.0, 4.4); }
+  else if (t < 7.6) { S2(t); if (t < 4.4) blockWipe(t, 3.6, 4.0, 4.4); }
+  else if (t < 8.0) zoomInto(S2, t, 7.6, 8.0, 141, 238);
+  else if (t < 11.6) S3(t);
+  else if (t < 12.0) { S4(12.0); var p = ease(seg(t, 11.6, 12.0)); R(BX[0] * p, BY * p, W - (W - 24) * p, H - (H - 24) * p, C.red); }
+  else if (t < 17.6) S4(t);
+  else if (t < 18.0) { var s = Math.round(ease(seg(t, 17.6, 18.0)) * W); var keep = g; g = og; S4(t); g = keep; g.drawImage(off, -s, 0); g = og; S5(18.0); g = keep; g.drawImage(off, W - s, 0); }
+  else if (t < 24.0) { S5(t); if (t >= 23.6) dither(t, 23.6, 24.0); }
+  else if (t < 26.0) S6(t);
+  else S7(t);
+}
+
+window.__timelines = window.__timelines || {};
+var tl = gsap.timeline({ paused: true }), clock = { t: 0 };
+tl.fromTo(clock, { t: 0 }, { t: 30, duration: 30, ease: "none", onUpdate: function () { draw(clock.t); } }, 0);
+window.__timelines.main = tl;
+draw(0);
+document.fonts.load("12px FusionPixel").then(function () { tcache = {}; draw(clock.t); });
+</script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+{ "name": "explainer-pixel", "private": true, "scripts": { "render": "hyperframes render --output ./renders/explainer-pixel.mp4" },
+  "dependencies": { "hyperframes": "0.9.88" } }
