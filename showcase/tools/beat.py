@@ -3,6 +3,7 @@
 Usage: python3 beat.py <out.wav> [--bpm 120] [--bars 15] [--drop 11] [--style pluck|chip]
   --drop N   : bar index (0-based) where drums drop out for one bar (a "breath"); -1 = none
   --style    : pluck = marimba-like pluck (line-art / explainer); chip = square-wave chiptune (pixel)
+  --sfx      : "14:ding,19:pickup,22.5:clear,24:blip" synthesized game sounds placed on beats
 Bar 0–1 is an intro (melody + shaker only); drums enter on bar 2; the last bar ends on a held chord.
 Then normalize: ffmpeg -i out.wav -af loudnorm=I=-14:TP=-1.5:LRA=11 -ar 48000 music.m4a
 """
@@ -12,6 +13,7 @@ import numpy as np
 ap = argparse.ArgumentParser()
 ap.add_argument("out"); ap.add_argument("--bpm", type=float, default=120); ap.add_argument("--bars", type=int, default=15)
 ap.add_argument("--drop", type=int, default=11); ap.add_argument("--style", default="pluck")
+ap.add_argument("--sfx", default="", help="comma list of time:kind, kind in ding|pickup|clear|blip")
 a = ap.parse_args()
 
 SR = 44100
@@ -61,6 +63,20 @@ def clap():
         b = noise(0.2, 0.05 if k == 2 else 0.008); i = int(off * SR); s[i:i + len(b)] += b[: len(s) - i]
     return s
 
+def sq(f, dur, gain=1.0, decay=0.08):
+    e, t = env(dur, 0.002, decay); return np.sign(np.sin(2 * np.pi * f * t)) * e * gain
+
+def sfx(kind):
+    if kind == "ding":    # block bump: two quick high notes
+        return np.concatenate([sq(midi(84), 0.06), sq(midi(91), 0.22, 1, 0.09)])
+    if kind == "pickup":  # rising arpeggio
+        return np.concatenate([sq(midi(m), 0.045, 1, 0.05) for m in (72, 76, 79, 84)] + [sq(midi(88), 0.15, 1, 0.07)])
+    if kind == "clear":   # small fanfare
+        return np.concatenate([sq(midi(m), d, 1, 0.12) for m, d in ((72, 0.12), (76, 0.12), (79, 0.12), (84, 0.45))])
+    if kind == "blip":
+        return sq(midi(96), 0.05, 1, 0.03)
+    raise SystemExit("unknown sfx " + kind)
+
 # C – Am – F – G, one chord per bar
 prog = [(48, [60, 64, 67, 72]), (45, [57, 60, 64, 69]), (41, [57, 60, 65, 69]), (43, [55, 59, 62, 67])]
 arp = [0, 1, 2, 3, 2, 1, 2, 3]               # 8th-note pattern indexes into chord
@@ -90,6 +106,9 @@ for b in range(a.bars):
         for k in (1, 3): add(clap(), t0 + k * spb, 0.35)
     if b == a.drop:                          # short riser into the next bar
         e, t = env(bar, 0.9 * bar, 9); add(noise(bar, 9) * (t / bar) ** 2, t0, 0.08)
+
+for item in filter(None, a.sfx.split(",")):
+    tt, kind = item.split(":"); add(sfx(kind), float(tt), 0.16)
 
 mix /= np.max(np.abs(mix)) + 1e-9
 fade = int(0.25 * SR); mix[-fade:] *= np.linspace(1, 0, fade)
